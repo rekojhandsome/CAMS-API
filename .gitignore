@@ -1,0 +1,9 @@
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.log
+*.tmp
+*.mdf
+*.ldf
