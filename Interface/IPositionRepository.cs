@@ -2,7 +2,7 @@
 
 namespace CAMS_API.Interface
 {
-    public interface IPosititionRepository
+    public interface IPositionRepository
     {
         Task<IEnumerable<Position>> GetPositionsAsync();
         Task<Position> GetPositionByIDAsync(int id);
