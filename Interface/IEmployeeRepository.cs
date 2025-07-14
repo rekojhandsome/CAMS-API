@@ -2,7 +2,7 @@
 
 namespace CAMS_API.Interface
 {
-    public class IEmployeeRepository
+    public interface IEmployeeRepository
     {
         Task<IEnumerable<Employee>> GetEmployeesAsync();
         Task<Employee> GetEmployeeByIDAsync(int id);
