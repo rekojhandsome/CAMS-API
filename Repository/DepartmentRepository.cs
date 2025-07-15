@@ -24,7 +24,7 @@ namespace CAMS_API.Repository
             dbContext.Departments.Remove(department);
         }
 
-        public async Task<Department> GetDepartmentAsync(int id)
+        public async Task<Department> GetDepartmentByIDAsync(int id)
         {
             return await dbContext.Departments.FirstOrDefaultAsync(d => d.departmentID == id);
         }

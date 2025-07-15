@@ -1,10 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-
-namespace CAMS_API.Models.Entities
+﻿namespace CAMS_API.Models.DTO.EmployeeDTO
 {
-    public class Employee
+    public class EmployeeModel
     {
-        public int employeeID { get; set; }
         public required string firstName { get; set; }
         public string? middleName { get; set; }
         public required string lastName { get; set; }
@@ -16,8 +13,5 @@ namespace CAMS_API.Models.Entities
         public required DateTime dateHired { get; set; }
         public int positionID { get; set; }
         public int departmentID { get; set; }
-        public DateTime dateCreated { get; set; }
-        public required Department Department { get; set; }
-        public required Position Position { get; set; }
     }
 }
