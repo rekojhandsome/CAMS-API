@@ -9,25 +9,11 @@ namespace CAMS_API.Configuration
         public void Configure(EntityTypeBuilder<Department> builder)
         {
             builder.ToTable("Department")
-                .HasKey(d => d.departmentID);
-
-            builder.Property(d => d.departmentID)
-                .HasColumnName("DepartmentID")
-                .IsRequired();
-
-            builder.Property(d => d.departmentName)
-                .HasColumnName("DepartmentName")
-               
-                .IsRequired();
-
-            builder.Property(d => d.departmentCode)
-                .HasColumnName("DepartmentCode")
-                .HasMaxLength(100)
-                .IsRequired(false);
-
+                .HasKey(d => d.DepartmentID);
+          
             builder.HasMany(d => d.Employees)
                 .WithOne(e => e.Department)
-                .HasForeignKey(e => e.departmentID)
+                .HasForeignKey(e => e.DepartmentID)
                 .OnDelete(DeleteBehavior.Cascade);
 
         }

@@ -4,19 +4,19 @@ namespace CAMS_API.Models.Entities
 {
     public class Employee
     {
-        public int employeeID { get; set; }
-        public required string firstName { get; set; }
-        public string? middleName { get; set; }
-        public required string lastName { get; set; }
-        public string? suffix { get; set; }
-        public required DateTime birthDate { get; set; }
-        public required string gender { get; set; }
-        public int contactNo { get; set; }
-        public required string email { get; set; }
-        public required DateTime dateHired { get; set; }
-        public int positionID { get; set; }
-        public int departmentID { get; set; }
-        public DateTime dateCreated { get; set; }
+        public int EmployeeID { get; set; }
+        public required string FirstName { get; set; }
+        public string? MiddleName { get; set; }
+        public required string LastName { get; set; }
+        public string? Suffix { get; set; }
+        public required DateTime BirthDate { get; set; }
+        public required string Gender { get; set; }
+        public int ContactNo { get; set; }
+        public required string Email { get; set; }
+        public required DateTime DateHired { get; set; }
+        public int PositionID { get; set; }
+        public int DepartmentID { get; set; }
+        public DateTime DateCreated { get; set; }
         public required Department Department { get; set; }
         public required Position Position { get; set; }
     }

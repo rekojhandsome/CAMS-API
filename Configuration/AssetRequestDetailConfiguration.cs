@@ -11,16 +11,16 @@ namespace CAMS_API.Configuration
             builder.ToTable("AssetRequestDetail")
                 .HasKey(ard => new
                 {
-                    ard.assetRequestID,
-                    ard.sequenceID
+                    ard.AssetRequestID,
+                    ard.SequenceID
                 });
 
-            builder.HasOne(ard => ard.AssetRequestHeader)
-                .WithMany(ard => ard.AssetRequestDetails)
-                .HasForeignKey(ard => ard.assetRequestID)
-                .OnDelete(DeleteBehavior.Cascade);
+            //builder.HasOne(ard => ard.AssetRequestHeader)
+            //    .WithMany(ard => ard.AssetRequestDetails)
+            //    .HasForeignKey(ard => ard.AssetRequestID)
+            //    .OnDelete(DeleteBehavior.Cascade);
 
-            builder.Property(ard => ard.sequenceID)
+            builder.Property(ard => ard.SequenceID)
                 .IsRequired()
                 .ValueGeneratedNever();
         }

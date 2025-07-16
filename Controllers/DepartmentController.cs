@@ -53,7 +53,7 @@ namespace CAMS_API.Controllers
             await uow.Departments.CreateDepartmentAsync(department);
             await uow.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetDepartment), new { id = department.departmentID }, model);
+            return CreatedAtAction(nameof(GetDepartment), new { id = department.DepartmentID }, model);
         }
 
         [HttpPut("{id:int}")]

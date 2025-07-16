@@ -9,26 +9,13 @@ namespace CAMS_API.Configuration
         public void Configure(EntityTypeBuilder<Device> builder)
         {
             builder.ToTable("Device")
-                .HasKey(d => d.deviceID);
+                .HasKey(d => d.DeviceID);
 
-            builder.Property(d => d.deviceID)
-                .HasColumnName("DeviceID");
-
-            builder.Property(d => d.deviceName)
-                .HasColumnName("DeviceName")
-                .IsRequired();
-
-            builder.Property(d => d.deviceType)
-                .HasColumnName("DeviceType")
-                .IsRequired();
-
-            builder.Property(d => d.brand)
-                .HasColumnName("Brand")
-                .IsRequired();
-
-            builder.Property(d => d.model)
-                .HasColumnName("Model")
-                .IsRequired();
+            //Relationship Device to Asset 1:N
+            builder.HasMany(d => d.Assets)
+                .WithOne(a => a.Device)
+                .HasForeignKey(a => a.DeviceID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

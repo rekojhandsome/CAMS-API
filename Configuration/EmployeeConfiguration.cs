@@ -9,7 +9,7 @@ namespace CAMS_API.Configuration
         public void Configure(EntityTypeBuilder<Employee> builder)
         {
             builder.ToTable("Employees")
-                .HasKey(e => e.employeeID);
+                .HasKey(e => e.EmployeeID);
         }
     }
 }

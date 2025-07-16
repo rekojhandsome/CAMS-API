@@ -9,19 +9,11 @@ namespace CAMS_API.Configuration
         public void Configure(EntityTypeBuilder<Position> builder)
         {
             builder.ToTable("Position")
-                .HasKey(p => p.positionID);
-
-            builder.Property(p => p.positionID)
-                .HasColumnName("PositionID");
-
-            builder.Property(p => p.positionName)
-                .HasColumnName("PositionName")
-                .HasMaxLength(100)
-                .IsRequired();
+                .HasKey(p => p.PositionID);
 
             builder.HasMany(p => p.Employees)
                 .WithOne(e => e.Position)
-                .HasForeignKey(e => e.positionID)
+                .HasForeignKey(e => e.PositionID)
                 .OnDelete(DeleteBehavior.Cascade);
 
         }

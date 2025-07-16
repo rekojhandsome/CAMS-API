@@ -52,7 +52,7 @@ namespace CAMS_API.Controllers
             await uow.Employees.CreateEmployeeAsync(employee);
             await uow.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetEmployee), new { id = employee.employeeID }, model); 
+            return CreatedAtAction(nameof(GetEmployee), new { id = employee.EmployeeID }, model); 
         }
 
         [HttpPut("{id:int}")]
