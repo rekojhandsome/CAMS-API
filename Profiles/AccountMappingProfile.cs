@@ -16,6 +16,15 @@ namespace CAMS_API.Profiles
             // Mapping between AuthenticationModel and Account
             CreateMap<AuthenticationModel, Account>();
             CreateMap<Account, AuthenticationModel>();
+
+            //Mapping between LoginModel and Account
+            CreateMap<LoginModel, Account>();
+            CreateMap<Account, LoginModel>();
+
+            //Mapping between AuthenticationResponseModel and Account
+            CreateMap<AuthenticationResponseModel, Account>();
+            CreateMap<Account, AuthenticationResponseModel>();
+
         }
     }
 }

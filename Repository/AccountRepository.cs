@@ -18,7 +18,7 @@ namespace CAMS_API.Repository
             return await dbContext.Accounts.FirstOrDefaultAsync(a => a.Username == username);
         }
 
-        public Task<Account> LoginAsync(Account account)
+        public Task<string> LoginAsync(Account account)
         {
             throw new NotImplementedException();
         }
@@ -28,5 +28,7 @@ namespace CAMS_API.Repository
             await dbContext.Accounts.AddAsync(account);
             return account;
         }
+
+        
     }
 }

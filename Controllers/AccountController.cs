@@ -23,7 +23,7 @@ namespace CAMS_API.Controllers
             this.authService = authService;
         }
         [HttpPost("register")]
-        public async Task<ActionResult<AuthenticationModel>> Register(AuthenticationModel model)
+        public async Task<ActionResult<AuthenticationModel>> Register([FromBody] AuthenticationModel model)
         {
             var account = mapper.Map<Account>(model);
             if (account == null)
@@ -35,6 +35,23 @@ namespace CAMS_API.Controllers
             var registeredAccountModel = mapper.Map<AccountModel>(registeredAccount);
 
             return Ok(registeredAccountModel);
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginModel>> Login([FromBody] LoginModel model)
+        {
+            var account = mapper.Map<Account>(model);
+
+            var token = await authService.LoginAsync(account);
+
+            if (account == null)
+            {
+                return Unauthorized("Invalid username or password.");
+            }
+
+            var accountModel = mapper.Map<AuthenticationResponseModel>(account);
+            return Ok(accountModel);
+
         }
     }
 }
