@@ -2,6 +2,7 @@
 {
     public interface IUnitOfWork
     {
+        IAccountRepository Accounts { get; }
         IAssetRepository Assets { get; }
         IAssetRequestHeaderRepository AssetRequestHeaders { get; }
         IDepartmentRepository Departments { get; }

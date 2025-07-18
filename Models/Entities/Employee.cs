@@ -17,7 +17,9 @@ namespace CAMS_API.Models.Entities
         public int PositionID { get; set; }
         public int DepartmentID { get; set; }
         public DateTime DateCreated { get; set; }
-        public required Department Department { get; set; }
-        public required Position Position { get; set; }
+        public Department? Department { get; set; }
+        public Position? Position { get; set; }
+        public Account? Account { get; set; }
+
     }
 }

@@ -7,6 +7,8 @@ namespace CAMS_API.Repository.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext dbContext;
+        
+        public IAccountRepository Accounts { get; private set; }
         public IAssetRepository Assets { get; private set; }
 
         public IAssetRequestHeaderRepository AssetRequestHeaders { get; private set; }
@@ -19,10 +21,13 @@ namespace CAMS_API.Repository.UnitOfWork
 
         public IPositionRepository Positions { get; private set; }
 
+        
+
         public UnitOfWork(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;
 
+            Accounts = new AccountRepository(dbContext);
             Assets = new AssetRepository(dbContext);
             AssetRequestHeaders = new AssetRequestHeaderRepository(dbContext);
             Departments = new DepartmentRepository(dbContext);

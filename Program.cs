@@ -1,6 +1,8 @@
 using CAMS_API.Data;
 using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Repository;
 using CAMS_API.Repository.UnitOfWork;
+using CAMS_API.Service;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //Database Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//Services
+builder.Services.AddScoped<IAuthenticationServiceRepository, AuthenticationServiceRepository>();
 
 var app = builder.Build();
 

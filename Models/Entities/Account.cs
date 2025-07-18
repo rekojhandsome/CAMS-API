@@ -11,6 +11,6 @@
         public DateTime RefreshTokenExpiryTime { get; set; }
 
         public int EmployeeID { get; set; }
-        public required Employee Employee { get; set; }
+        public Employee? Employee { get; set; }
     }
 }

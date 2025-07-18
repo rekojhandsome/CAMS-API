@@ -1,6 +1,9 @@
-﻿using CAMS_API.Models.DTO.AccountDTO;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using AutoMapper;
+using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Models.DTO.AccountDTO;
+using CAMS_API.Models.DTO.AuthenticationDTO;
+using CAMS_API.Models.Entities;
+using CAMS_API.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CAMS_API.Controllers
@@ -9,17 +12,29 @@ namespace CAMS_API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        public AccountController()
+        private readonly IUnitOfWork uow;
+        private readonly IMapper mapper;
+        private readonly IAuthenticationServiceRepository authService;
+
+        public AccountController(IUnitOfWork uow, IMapper mapper, IAuthenticationServiceRepository authService)
         {
-            
+            this.uow = uow;
+            this.mapper = mapper;
+            this.authService = authService;
         }
+        [HttpPost("register")]
+        public async Task<ActionResult<AuthenticationModel>> Register(AuthenticationModel model)
+        {
+            var account = mapper.Map<Account>(model);
+            if (account == null)
+            {
+                return BadRequest("Username already exists.");
+            }
 
-        //public async Task<ActionResult<AccountModel>> Register(AccountModel model)
-        //{
-        //    //var hashedPassword = new PasswordHasher<AccountModel>()
-        //    //    .HashPassword(AccountModel, model.Password);
+            var registeredAccount = await authService.RegisterAsync(account);
+            var registeredAccountModel = mapper.Map<AccountModel>(registeredAccount);
 
-
-        //}
+            return Ok(registeredAccountModel);
+        }
     }
 }
