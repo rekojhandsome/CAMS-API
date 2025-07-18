@@ -22,6 +22,42 @@ namespace CAMS_API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CAMS_API.Models.Entities.Account", b =>
+                {
+                    b.Property<int>("AccountID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountID"));
+
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AccountID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("CAMS_API.Models.Entities.Asset", b =>
                 {
                     b.Property<int>("AssetID")
@@ -231,6 +267,17 @@ namespace CAMS_API.Migrations
                     b.HasKey("PositionID");
 
                     b.ToTable("Position", (string)null);
+                });
+
+            modelBuilder.Entity("CAMS_API.Models.Entities.Account", b =>
+                {
+                    b.HasOne("CAMS_API.Models.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Asset", b =>

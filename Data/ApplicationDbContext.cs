@@ -12,9 +12,8 @@ namespace CAMS_API.Data
         protected ApplicationDbContext()
         {
         }
-
+        public DbSet<Account> Accounts { get; set; }
         public DbSet<Asset> Assets { get; set; }
-       
         public DbSet<AssetRequestHeader> AssetRequestHeaders { get; set; }
         public DbSet<AssetRequestDetail> AssetRequestDetails { get; set; } 
         public DbSet<Department> Departments { get; set; }
