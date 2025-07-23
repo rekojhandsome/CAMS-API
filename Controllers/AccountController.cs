@@ -2,8 +2,8 @@
 using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.AccountDTO;
 using CAMS_API.Models.DTO.AuthenticationDTO;
-using CAMS_API.Models.Entities;
 using CAMS_API.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CAMS_API.Controllers
@@ -25,16 +25,7 @@ namespace CAMS_API.Controllers
         [HttpPost("register")]
         public async Task<ActionResult<AccountRegisterModel>> Register([FromBody] AccountRegisterModel model)
         {
-            //var account = mapper.Map<Account>(model);
-            //if (account == null)
-            //{
-            //    return BadRequest("Username already exists.");
-            //}
-
-            //var registeredAccount = await authService.RegisterAsync(account);
-            //var registeredAccountModel = mapper.Map<AccountModel>(registeredAccount);
-
-
+            
             var registeredAccount = await authService.RegisterAsync(model);
             if (registeredAccount == null)
             {
@@ -49,17 +40,6 @@ namespace CAMS_API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<LoginModel>> Login([FromBody] LoginModel model)
         {
-            //var account = mapper.Map<Account>(model);
-
-            //var token = await authService.LoginAsync(account);
-
-            //if (account == null)
-            //{
-            //    return Unauthorized("Invalid username or password.");
-            //}
-
-            //var accountModel = mapper.Map<AuthenticationResponseModel>(account);
-            //return Ok(accountModel);
 
             var login = await authService.LoginAsync(model);
             if (login == null)
@@ -68,7 +48,20 @@ namespace CAMS_API.Controllers
             }
 
             return Ok(login);
+        }
 
+        [Authorize]
+        [HttpGet("authenticated-user-only")]
+        public IActionResult AuthenticatedUserEndpoint()
+        {
+            return Ok("You are authenticated!");
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin-endpoint-only")]
+        public IActionResult AdminOnlyEndpoint()
+        {
+            return Ok("You are an Admin!");
         }
     }
 }
