@@ -1,7 +1,13 @@
 using CAMS_API.Data;
 using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Repository;
 using CAMS_API.Repository.UnitOfWork;
+using CAMS_API.Service;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens.Experimental;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +24,25 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //Database Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+//Services
+builder.Services.AddScoped<IAuthenticationServiceRepository, AuthenticationServiceRepository>();
+
+//JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["AppSettings:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["AppSettings:Audience"],
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["AppSettings:Token"]!)),
+            ValidateIssuerSigningKey = true
+        };
+    });
 
 var app = builder.Build();
 

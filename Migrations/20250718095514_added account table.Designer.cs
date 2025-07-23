@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CAMS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250714115507_Table configuration done")]
-    partial class Tableconfigurationdone
+    [Migration("20250718095514_added account table")]
+    partial class addedaccounttable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,243 +25,269 @@ namespace CAMS_API.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CAMS_API.Models.Entities.Account", b =>
+                {
+                    b.Property<int>("AccountID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AccountID"));
+
+                    b.Property<int>("EmployeeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RefreshToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("RefreshTokenExpiryTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("AccountID");
+
+                    b.HasIndex("EmployeeID");
+
+                    b.ToTable("Accounts");
+                });
+
             modelBuilder.Entity("CAMS_API.Models.Entities.Asset", b =>
                 {
-                    b.Property<int>("assetID")
+                    b.Property<int>("AssetID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("AssetID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("assetID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssetID"));
 
-                    b.Property<string>("assetTag")
+                    b.Property<string>("AssetName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("AssetTag");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("dateAcquired")
-                        .HasColumnType("datetime")
-                        .HasColumnName("DateAcquired");
+                    b.Property<DateTime>("DateAcquired")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("deviceID")
-                        .HasColumnType("int")
-                        .HasColumnName("DeviceID");
+                    b.Property<int>("DeviceID")
+                        .HasColumnType("int");
 
-                    b.Property<decimal>("price")
-                        .HasColumnType("decimal(18,2)")
-                        .HasColumnName("Price");
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
 
-                    b.Property<string>("serialNumber")
+                    b.Property<string>("SerialNumber")
                         .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnName("SerialNumber");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("status")
+                    b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Status");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("assetID");
+                    b.HasKey("AssetID");
 
-                    b.HasIndex("deviceID");
+                    b.HasIndex("DeviceID");
 
                     b.ToTable("Asset", (string)null);
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.AssetRequestDetail", b =>
                 {
-                    b.Property<int>("assetRequestID")
+                    b.Property<int>("AssetRequestID")
                         .HasColumnType("int");
 
-                    b.Property<int>("sequenceID")
+                    b.Property<int>("SequenceID")
                         .HasColumnType("int");
 
-                    b.Property<int>("assetID")
+                    b.Property<int>("AssetID")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("assetValue")
+                    b.Property<decimal>("AssetValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("assetRequestID", "sequenceID");
+                    b.HasKey("AssetRequestID", "SequenceID");
 
-                    b.HasIndex("assetID");
+                    b.HasIndex("AssetID");
 
                     b.ToTable("AssetRequestDetail", (string)null);
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.AssetRequestHeader", b =>
                 {
-                    b.Property<int>("assetRequestID")
+                    b.Property<int>("AssetRequestID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("assetRequestID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AssetRequestID"));
 
-                    b.Property<DateTime>("assetRequestDate")
+                    b.Property<DateTime>("AssetRequestDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("employeeID")
+                    b.Property<int>("EmployeeID")
                         .HasColumnType("int");
 
-                    b.Property<bool>("requiresApproval")
+                    b.Property<bool>("RequiresApproval")
                         .HasColumnType("bit");
 
-                    b.Property<string>("status")
+                    b.Property<string>("Status")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("totalAssetValue")
+                    b.Property<decimal>("TotalAssetValue")
                         .HasColumnType("decimal(18,2)");
 
-                    b.HasKey("assetRequestID");
+                    b.HasKey("AssetRequestID");
 
-                    b.HasIndex("employeeID");
+                    b.HasIndex("EmployeeID");
 
                     b.ToTable("AssetRequestHeaders", (string)null);
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Department", b =>
                 {
-                    b.Property<int>("departmentID")
+                    b.Property<int>("DepartmentID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("DepartmentID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("departmentID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentID"));
 
-                    b.Property<string>("departmentCode")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("DepartmentCode");
-
-                    b.Property<string>("departmentName")
+                    b.Property<string>("DepartmentCode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DepartmentName");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("departmentID");
+                    b.Property<string>("DepartmentName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DepartmentID");
 
                     b.ToTable("Department", (string)null);
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Device", b =>
                 {
-                    b.Property<int>("deviceID")
+                    b.Property<int>("DeviceID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("DeviceID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("deviceID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeviceID"));
 
-                    b.Property<string>("brand")
+                    b.Property<string>("Brand")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Brand");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("deviceName")
+                    b.Property<string>("DeviceName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DeviceName");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("deviceType")
+                    b.Property<string>("DeviceType")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("DeviceType");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("model")
+                    b.Property<string>("Model")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Model");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("deviceID");
+                    b.HasKey("DeviceID");
 
                     b.ToTable("Device", (string)null);
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Employee", b =>
                 {
-                    b.Property<int>("employeeID")
+                    b.Property<int>("EmployeeID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("employeeID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmployeeID"));
 
-                    b.Property<DateTime>("birthDate")
+                    b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("contactNo")
+                    b.Property<int>("ContactNo")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("dateCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("dateHired")
+                    b.Property<DateTime>("DateHired")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("departmentID")
+                    b.Property<int>("DepartmentID")
                         .HasColumnType("int");
 
-                    b.Property<string>("email")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("firstName")
+                    b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("gender")
+                    b.Property<string>("Gender")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("lastName")
+                    b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("middleName")
-                        .IsRequired()
+                    b.Property<string>("MiddleName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("positionID")
+                    b.Property<int>("PositionID")
                         .HasColumnType("int");
 
-                    b.Property<string>("suffix")
-                        .IsRequired()
+                    b.Property<string>("Suffix")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("employeeID");
+                    b.HasKey("EmployeeID");
 
-                    b.HasIndex("departmentID");
+                    b.HasIndex("DepartmentID");
 
-                    b.HasIndex("positionID");
+                    b.HasIndex("PositionID");
 
                     b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Position", b =>
                 {
-                    b.Property<int>("positionID")
+                    b.Property<int>("PositionID")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("PositionID");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("positionID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PositionID"));
 
-                    b.Property<string>("positionName")
+                    b.Property<string>("PositionName")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("PositionName");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("positionID");
+                    b.HasKey("PositionID");
 
                     b.ToTable("Position", (string)null);
+                });
+
+            modelBuilder.Entity("CAMS_API.Models.Entities.Account", b =>
+                {
+                    b.HasOne("CAMS_API.Models.Entities.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Asset", b =>
                 {
                     b.HasOne("CAMS_API.Models.Entities.Device", "Device")
                         .WithMany("Assets")
-                        .HasForeignKey("deviceID")
+                        .HasForeignKey("DeviceID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -272,13 +298,13 @@ namespace CAMS_API.Migrations
                 {
                     b.HasOne("CAMS_API.Models.Entities.Asset", null)
                         .WithMany("AssetRequestDetails")
-                        .HasForeignKey("assetID")
+                        .HasForeignKey("AssetID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CAMS_API.Models.Entities.AssetRequestHeader", "AssetRequestHeader")
                         .WithMany("AssetRequestDetails")
-                        .HasForeignKey("assetRequestID")
+                        .HasForeignKey("AssetRequestID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -289,7 +315,7 @@ namespace CAMS_API.Migrations
                 {
                     b.HasOne("CAMS_API.Models.Entities.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("employeeID")
+                        .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -300,13 +326,13 @@ namespace CAMS_API.Migrations
                 {
                     b.HasOne("CAMS_API.Models.Entities.Department", "Department")
                         .WithMany("Employees")
-                        .HasForeignKey("departmentID")
+                        .HasForeignKey("DepartmentID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("CAMS_API.Models.Entities.Position", "Position")
                         .WithMany("Employees")
-                        .HasForeignKey("positionID")
+                        .HasForeignKey("PositionID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

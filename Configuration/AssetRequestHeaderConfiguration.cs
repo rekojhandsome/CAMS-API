@@ -9,7 +9,12 @@ namespace CAMS_API.Configuration
         public void Configure(EntityTypeBuilder<AssetRequestHeader> builder)
         {
             builder.ToTable("AssetRequestHeaders")
-                .HasKey(arh => arh.assetRequestID);
+                .HasKey(arh => arh.AssetRequestID);
+
+            builder.HasMany(arh => arh.AssetRequestDetails)
+                .WithOne(ard => ard.AssetRequestHeader)
+                .HasForeignKey(ard => ard.AssetRequestID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

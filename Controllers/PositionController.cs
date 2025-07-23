@@ -50,7 +50,7 @@ namespace CAMS_API.Controllers
 
             await uow.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetPosition), new { id = position.positionID }, model);
+            return CreatedAtAction(nameof(GetPosition), new { id = position.PositionID }, model);
 
         }
         [HttpPut("{id:int}")]

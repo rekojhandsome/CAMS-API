@@ -26,7 +26,7 @@ namespace CAMS_API.Repository
 
         public async Task<AssetRequestHeader> GetAssetRequestHeaderByIDAsync(int id)
         {
-            return await dbContext.AssetRequestHeaders.FirstOrDefaultAsync(arh => arh.assetRequestID == id);
+            return await dbContext.AssetRequestHeaders.FirstOrDefaultAsync(arh => arh.AssetRequestID == id);
         }
 
         public async Task<IEnumerable<AssetRequestHeader>> GetAssetRequestHeadersAsync()

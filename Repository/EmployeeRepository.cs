@@ -26,7 +26,7 @@ namespace CAMS_API.Repository
 
         public async Task<Employee> GetEmployeeByIDAsync(int id)
         {
-            return await dbContext.Employees.FirstOrDefaultAsync(e => e.employeeID == id);
+            return await dbContext.Employees.FirstOrDefaultAsync(e => e.EmployeeID == id);
         }
 
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()

@@ -50,7 +50,7 @@ namespace CAMS_API.Controllers
             await uow.Assets.CreateAssetAsync(asset);
             await uow.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetAsset), new { id = asset.assetID }, model);
+            return CreatedAtAction(nameof(GetAsset), new { id = asset.AssetID }, model);
         }
 
         [HttpPut("{id:int}")]

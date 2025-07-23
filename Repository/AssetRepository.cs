@@ -26,7 +26,7 @@ namespace CAMS_API.Repository
 
         public async Task<Asset> GetAssetByIDAsync(int id)
         {
-            return await dbContext.Assets.FirstOrDefaultAsync(a => a.assetID == id);
+            return await dbContext.Assets.FirstOrDefaultAsync(a => a.AssetID == id);
         }
 
         public async Task<IEnumerable<Asset>> GetAssetsAsync()

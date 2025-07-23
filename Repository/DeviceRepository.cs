@@ -26,7 +26,7 @@ namespace CAMS_API.Repository
 
         public async Task<Device> GetDeviceByIDAsync(int id)
         {
-            return await dbContext.Devices.FirstOrDefaultAsync(d => d.deviceID == id);
+            return await dbContext.Devices.FirstOrDefaultAsync(d => d.DeviceID == id);
         }
 
         public async Task<IEnumerable<Device>> GetDevicesAsync()

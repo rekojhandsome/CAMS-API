@@ -51,7 +51,7 @@ namespace CAMS_API.Controllers
             await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
             await uow.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetAssetRequestHeader), new { id = assetRequestHeader.assetRequestID }, model);
+            return CreatedAtAction(nameof(GetAssetRequestHeader), new { id = assetRequestHeader.AssetRequestID }, model);
         }
 
         [HttpPut("{id:int}")]

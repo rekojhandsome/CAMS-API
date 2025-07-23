@@ -26,7 +26,7 @@ namespace CAMS_API.Repository
 
         public async Task<Department> GetDepartmentByIDAsync(int id)
         {
-            return await dbContext.Departments.FirstOrDefaultAsync(d => d.departmentID == id);
+            return await dbContext.Departments.FirstOrDefaultAsync(d => d.DepartmentID == id);
         }
 
         public async Task<IEnumerable<Department>> GetDepartmentsAsync()

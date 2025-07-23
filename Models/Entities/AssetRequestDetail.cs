@@ -2,10 +2,10 @@
 {
     public class AssetRequestDetail
     {
-        public int assetRequestID { get; set; }
-        public int sequenceID { get; set; }
-        public int assetID { get; set; }
-        public decimal assetValue { get; set; }
+        public int AssetRequestID { get; set; }
+        public int SequenceID { get; set; }
+        public int AssetID { get; set; }
+        public decimal AssetValue { get; set; }
 
         public AssetRequestHeader? AssetRequestHeader { get; set; }
     }

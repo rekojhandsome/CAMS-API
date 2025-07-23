@@ -26,7 +26,7 @@ namespace CAMS_API.Repository
 
         public async Task<Position> GetPositionByIDAsync(int id)
         {
-            return await dbContext.Positions.FirstOrDefaultAsync(p => p.positionID == id);
+            return await dbContext.Positions.FirstOrDefaultAsync(p => p.PositionID == id);
         }
 
         public async Task<IEnumerable<Position>> GetPositionsAsync()

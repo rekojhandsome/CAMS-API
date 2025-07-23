@@ -49,7 +49,7 @@ namespace CAMS_API.Controllers
             await uow.Devices.CreateDeviceAsync(device);
             await uow.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetDevice), new { id = device.deviceID }, model);
+            return CreatedAtAction(nameof(GetDevice), new { id = device.DeviceID }, model);
         }
 
         [HttpPut("{id:int}")]
