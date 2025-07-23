@@ -1,4 +1,4 @@
-﻿namespace CAMS_API.Models.DTO.AuthenticationDTO
+﻿namespace CAMS_API.Models.DTO.AccountDTO
 {
     public class AccountRegisterModel
     {

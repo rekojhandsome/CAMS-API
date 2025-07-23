@@ -46,21 +46,29 @@ namespace CAMS_API.Controllers
             return Ok(createdAccount);
         }
 
-        //[HttpPost("login")]
-        //public async Task<ActionResult<LoginModel>> Login([FromBody] LoginModel model)
-        //{
-        //    var account = mapper.Map<Account>(model);
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginModel>> Login([FromBody] LoginModel model)
+        {
+            //var account = mapper.Map<Account>(model);
 
-        //    var token = await authService.LoginAsync(account);
+            //var token = await authService.LoginAsync(account);
 
-        //    if (account == null)
-        //    {
-        //        return Unauthorized("Invalid username or password.");
-        //    }
+            //if (account == null)
+            //{
+            //    return Unauthorized("Invalid username or password.");
+            //}
 
-        //    var accountModel = mapper.Map<AuthenticationResponseModel>(account);
-        //    return Ok(accountModel);
+            //var accountModel = mapper.Map<AuthenticationResponseModel>(account);
+            //return Ok(accountModel);
 
-        //}
+            var login = await authService.LoginAsync(model);
+            if (login == null)
+            {
+                return BadRequest("Invalid username or password.");
+            }
+
+            return Ok(login);
+
+        }
     }
 }

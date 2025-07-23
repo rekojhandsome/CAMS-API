@@ -1,4 +1,5 @@
 ﻿using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Models.DTO.AccountDTO;
 using CAMS_API.Models.DTO.AuthenticationDTO;
 using CAMS_API.Models.Entities;
 using CAMS_API.Service;
@@ -20,15 +21,15 @@ namespace CAMS_API.Repository
             this.uow = uow;
             this.configuration = configuration;
         }
-        public async Task<AuthenticationResponseModel?> LoginAsync(Account account)
+        public async Task<AuthenticationResponseModel?> LoginAsync(LoginModel model)
         {
-            var user = await uow.Accounts.FindAccountByUsername(account.Username);
+            var user = await uow.Accounts.FindAccountByUsername(model.Username);
             if (user == null)
             {
                 return null;
             }
 
-            if (new PasswordHasher<Account>().VerifyHashedPassword(user, user.Password, account.Password) == PasswordVerificationResult.Failed)
+            if (new PasswordHasher<Account>().VerifyHashedPassword(user, user.Password, model.Password) == PasswordVerificationResult.Failed)
             {
                 return null;
             }
