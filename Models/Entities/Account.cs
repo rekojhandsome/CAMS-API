@@ -3,6 +3,10 @@
     public class Account
     {
         public int AccountID { get; set; }
+<<<<<<< HEAD
+        public required string Username { get; set; } = string.Empty;
+        public required string Passwrod { get; set; } = string.Empty;
+=======
         public  string Username { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
 
@@ -12,5 +16,6 @@
 
         public int EmployeeID { get; set; }
         public Employee? Employee { get; set; }
+>>>>>>> master
     }
 }
