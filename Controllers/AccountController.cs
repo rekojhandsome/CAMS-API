@@ -23,35 +23,44 @@ namespace CAMS_API.Controllers
             this.authService = authService;
         }
         [HttpPost("register")]
-        public async Task<ActionResult<AuthenticationModel>> Register([FromBody] AuthenticationModel model)
+        public async Task<ActionResult<AccountRegisterModel>> Register([FromBody] AccountRegisterModel model)
         {
-            var account = mapper.Map<Account>(model);
-            if (account == null)
+            //var account = mapper.Map<Account>(model);
+            //if (account == null)
+            //{
+            //    return BadRequest("Username already exists.");
+            //}
+
+            //var registeredAccount = await authService.RegisterAsync(account);
+            //var registeredAccountModel = mapper.Map<AccountModel>(registeredAccount);
+
+
+            var registeredAccount = await authService.RegisterAsync(model);
+            if (registeredAccount == null)
             {
                 return BadRequest("Username already exists.");
             }
+            
+            var createdAccount = mapper.Map<AccountModel>(registeredAccount);
 
-            var registeredAccount = await authService.RegisterAsync(account);
-            var registeredAccountModel = mapper.Map<AccountModel>(registeredAccount);
-
-            return Ok(registeredAccountModel);
+            return Ok(createdAccount);
         }
 
-        [HttpPost("login")]
-        public async Task<ActionResult<LoginModel>> Login([FromBody] LoginModel model)
-        {
-            var account = mapper.Map<Account>(model);
+        //[HttpPost("login")]
+        //public async Task<ActionResult<LoginModel>> Login([FromBody] LoginModel model)
+        //{
+        //    var account = mapper.Map<Account>(model);
 
-            var token = await authService.LoginAsync(account);
+        //    var token = await authService.LoginAsync(account);
 
-            if (account == null)
-            {
-                return Unauthorized("Invalid username or password.");
-            }
+        //    if (account == null)
+        //    {
+        //        return Unauthorized("Invalid username or password.");
+        //    }
 
-            var accountModel = mapper.Map<AuthenticationResponseModel>(account);
-            return Ok(accountModel);
+        //    var accountModel = mapper.Map<AuthenticationResponseModel>(account);
+        //    return Ok(accountModel);
 
-        }
+        //}
     }
 }

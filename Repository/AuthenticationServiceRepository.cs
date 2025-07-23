@@ -45,23 +45,24 @@ namespace CAMS_API.Repository
             };
         }
 
-        public async Task<Account> RegisterAsync(Account account)
+        public async Task<Account> RegisterAsync(AccountRegisterModel model)
         {
-            var existingUsername = await uow.Accounts.FindAccountByUsername(account.Username);
+            var existingUsername = await uow.Accounts.FindAccountByUsername(model.Username);
 
             if(existingUsername != null)
             {
                 return null; // Username already exists
             }
 
-            var user = new Account{
-                Username = account.Username,
-                Password = "",
-                Role = account.Role,
-            };
+            var user = new Account();
 
-            user.Password = new PasswordHasher<Account>()
-                 .HashPassword(user, account.Password);
+            var hashedPassword = new PasswordHasher<Account>()
+                .HashPassword(user, model.Password);
+
+            user.Username = model.Username;
+            user.Password = hashedPassword;
+            user.Role = model.Role;
+            user.EmployeeID = model.EmployeeID;
 
             await uow.Accounts.RegisterAsync(user);
             await uow.CompleteAsync();
