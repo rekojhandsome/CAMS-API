@@ -77,7 +77,8 @@ namespace CAMS_API.Repository
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.Name, account.Username),
-                new Claim(ClaimTypes.NameIdentifier, account.AccountID.ToString())
+                new Claim(ClaimTypes.NameIdentifier, account.AccountID.ToString()),
+                new Claim(ClaimTypes.Role, account.Role)
 
             };
 
