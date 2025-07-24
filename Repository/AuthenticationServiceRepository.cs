@@ -1,4 +1,5 @@
-﻿using CAMS_API.Interface.IUnitOfWork;
+﻿using AutoMapper;
+using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.AccountDTO;
 using CAMS_API.Models.DTO.AuthenticationDTO;
 using CAMS_API.Models.Entities;
@@ -16,11 +17,13 @@ namespace CAMS_API.Repository
     {
         private readonly IUnitOfWork uow;
         private readonly IConfiguration configuration;
+        private readonly IMapper mapper;
 
-        public AuthenticationServiceRepository(IUnitOfWork uow, IConfiguration configuration)
+        public AuthenticationServiceRepository(IUnitOfWork uow, IConfiguration configuration, IMapper mapper)
         {
             this.uow = uow;
             this.configuration = configuration;
+            this.mapper = mapper;
         }
         public async Task<TokenResponseModel?> LoginAsync(LoginModel model)
         {
@@ -35,21 +38,19 @@ namespace CAMS_API.Repository
                 return null;
             }
 
-            var response = new TokenResponseModel
-            {
-                AccessToken = CreateToken(user),
-                RefreshToken = await GenerateAndSaveRefreshToken(user)
-            };
+            TokenResponseModel response = await CreateTokenResponse(user);
 
             return response;
         }
 
-        private async Task<AuthenticationResponseModel> CreateTokenResponse(Account account)
+        private async Task<TokenResponseModel> CreateTokenResponse(Account user)
         {
-            return new AuthenticationResponseModel
+            return new TokenResponseModel
             {
-                Username = account.Username,
-                Token = CreateToken(account),
+                Username = user.Username,
+                AccessToken = CreateToken(user),
+                RefreshToken = await GenerateAndSaveRefreshToken(user),
+                RefreshTokenExpiryTime = user.RefreshTokenExpiryTime
             };
         }
 
@@ -76,7 +77,6 @@ namespace CAMS_API.Repository
             await uow.CompleteAsync();
 
             return user;
-
         }
 
         private string GenerateRefreshToken()
@@ -86,6 +86,28 @@ namespace CAMS_API.Repository
             rng.GetBytes(randomNumber);
 
             return Convert.ToBase64String(randomNumber);
+        }
+        public async Task<TokenResponseModel?> RefreshTokenAsync(RefreshTokenRequestModel model)
+        {
+            var user = await ValidateRefreshTokenAsync(model.AccountID, model.RefreshToken);
+            if (user == null)
+            {
+                return null;
+            }
+
+            return await CreateTokenResponse(user);
+
+        }
+        private async Task<Account?> ValidateRefreshTokenAsync(int accountID, string refreshToken)
+        {
+            var user = await uow.Accounts.GetAccountByID(accountID);
+
+            if (user == null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
+            {
+                return null; // Invalid or expired refresh token
+            }
+
+            return user;
         }
 
         private async Task<string> GenerateAndSaveRefreshToken(Account Account)
@@ -119,7 +141,7 @@ namespace CAMS_API.Repository
                 issuer: configuration.GetValue<string>("AppSettings:Issuer"),
                 audience: configuration.GetValue<string>("AppSettings:Audience"),
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(1),
+                expires: DateTime.UtcNow.AddHours(10),
                 signingCredentials: creds
             );
 

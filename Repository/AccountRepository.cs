@@ -18,6 +18,11 @@ namespace CAMS_API.Repository
             return await dbContext.Accounts.FirstOrDefaultAsync(a => a.Username == username);
         }
 
+        public async Task<Account> GetAccountByID(int accountID)
+        {
+            return await dbContext.Accounts.FirstOrDefaultAsync(a => a.AccountID == accountID);
+        }
+
         public Task<string> LoginAsync(Account account)
         {
             throw new NotImplementedException();

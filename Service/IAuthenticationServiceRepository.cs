@@ -8,5 +8,6 @@ namespace CAMS_API.Service
     {
         Task<Account> RegisterAsync(AccountRegisterModel account);
         Task<TokenResponseModel> LoginAsync(LoginModel model);
+        Task<TokenResponseModel?> RefreshTokenAsync(RefreshTokenRequestModel model);
     }
 }

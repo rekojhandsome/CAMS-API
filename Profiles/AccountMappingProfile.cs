@@ -25,6 +25,9 @@ namespace CAMS_API.Profiles
             CreateMap<AuthenticationResponseModel, Account>();
             CreateMap<Account, AuthenticationResponseModel>();
 
+            //Mapping between TokenResponseModel and AuthenticationResponseModel
+            CreateMap<TokenResponseModel, AuthenticationResponseModel>();
+            CreateMap<AuthenticationResponseModel, TokenResponseModel>();
         }
     }
 }
