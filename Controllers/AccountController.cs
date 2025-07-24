@@ -38,16 +38,16 @@ namespace CAMS_API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<ActionResult<LoginModel>> Login([FromBody] LoginModel model)
+        public async Task<ActionResult<AuthenticationResponseModel>> Login([FromBody] LoginModel model)
         {
 
-            var login = await authService.LoginAsync(model);
-            if (login == null)
+            var result = await authService.LoginAsync(model);
+            if (result == null)
             {
                 return BadRequest("Invalid username or password.");
             }
 
-            return Ok(login);
+            return Ok(result);
         }
 
         [Authorize]
