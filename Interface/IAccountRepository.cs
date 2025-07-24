@@ -7,5 +7,6 @@ namespace CAMS_API.Interface
         Task<Account> FindAccountByUsername(string username);
         Task<Account> RegisterAsync(Account account);
         Task<string> LoginAsync(Account account);
+        Task<Account> GetAccountByID(int accountID);
     }
 }
