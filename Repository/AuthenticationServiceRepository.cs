@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace CAMS_API.Repository
@@ -21,7 +22,7 @@ namespace CAMS_API.Repository
             this.uow = uow;
             this.configuration = configuration;
         }
-        public async Task<AuthenticationResponseModel?> LoginAsync(LoginModel model)
+        public async Task<TokenResponseModel?> LoginAsync(LoginModel model)
         {
             var user = await uow.Accounts.FindAccountByUsername(model.Username);
             if (user == null)
@@ -34,7 +35,13 @@ namespace CAMS_API.Repository
                 return null;
             }
 
-            return await CreateTokenResponse(user);
+            var response = new TokenResponseModel
+            {
+                AccessToken = CreateToken(user),
+                RefreshToken = await GenerateAndSaveRefreshToken(user)
+            };
+
+            return response;
         }
 
         private async Task<AuthenticationResponseModel> CreateTokenResponse(Account account)
@@ -72,6 +79,27 @@ namespace CAMS_API.Repository
 
         }
 
+        private string GenerateRefreshToken()
+        {
+            var randomNumber = new byte[32];
+            using var rng = RandomNumberGenerator.Create();
+            rng.GetBytes(randomNumber);
+
+            return Convert.ToBase64String(randomNumber);
+        }
+
+        private async Task<string> GenerateAndSaveRefreshToken(Account Account)
+        {
+            var refreshToken = GenerateRefreshToken();
+
+            Account.RefreshToken = refreshToken;
+            Account.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(7);
+
+            await uow.CompleteAsync();
+
+            return refreshToken;
+        }
+
         private string CreateToken(Account account)
         {
             var claims = new List<Claim>
@@ -91,7 +119,7 @@ namespace CAMS_API.Repository
                 issuer: configuration.GetValue<string>("AppSettings:Issuer"),
                 audience: configuration.GetValue<string>("AppSettings:Audience"),
                 claims: claims,
-                expires: DateTime.UtcNow.AddDays(2),
+                expires: DateTime.UtcNow.AddDays(1),
                 signingCredentials: creds
             );
 
