@@ -10,13 +10,13 @@ namespace CAMS_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
         private readonly IAuthenticationServiceRepository authService;
 
-        public AccountController(IUnitOfWork uow, IMapper mapper, IAuthenticationServiceRepository authService)
+        public AuthenticationController(IUnitOfWork uow, IMapper mapper, IAuthenticationServiceRepository authService)
         {
             this.uow = uow;
             this.mapper = mapper;
