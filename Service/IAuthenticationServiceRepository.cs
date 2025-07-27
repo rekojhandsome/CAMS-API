@@ -6,7 +6,7 @@ namespace CAMS_API.Service
 {
     public interface IAuthenticationServiceRepository
     {
-        Task<Account> RegisterAsync(AccountRegisterModel account);
+        Task<Account> RegisterAccountAsync(RegisterModel model);
         Task<TokenResponseModel> LoginAsync(LoginModel model);
         Task<TokenResponseModel?> RefreshTokenAsync(RefreshTokenRequestModel model);
     }

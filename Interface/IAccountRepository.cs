@@ -5,8 +5,9 @@ namespace CAMS_API.Interface
     public interface IAccountRepository
     {
         Task<Account> FindAccountByUsername(string username);
-        Task<Account> RegisterAsync(Account account);
-        Task<string> LoginAsync(Account account);
+        Task<IEnumerable<Account>> GetAccountsAsync();
         Task<Account> GetAccountByID(int accountID);
+        Task<Account> RegisterAsync(Account account);
+
     }
 }

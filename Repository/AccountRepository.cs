@@ -23,9 +23,9 @@ namespace CAMS_API.Repository
             return await dbContext.Accounts.FirstOrDefaultAsync(a => a.AccountID == accountID);
         }
 
-        public Task<string> LoginAsync(Account account)
+        public async Task<IEnumerable<Account>> GetAccountsAsync()
         {
-            throw new NotImplementedException();
+            return await dbContext.Accounts.ToListAsync();
         }
 
         public async Task<Account> RegisterAsync(Account account)
@@ -33,7 +33,5 @@ namespace CAMS_API.Repository
             await dbContext.Accounts.AddAsync(account);
             return account;
         }
-
-        
     }
 }

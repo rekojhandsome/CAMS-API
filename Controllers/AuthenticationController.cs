@@ -23,10 +23,10 @@ namespace CAMS_API.Controllers
             this.authService = authService;
         }
         [HttpPost("register")]
-        public async Task<ActionResult<AccountRegisterModel>> Register([FromBody] AccountRegisterModel model)
+        public async Task<ActionResult<RegisterModel>> Register([FromBody] RegisterModel model)
         {
             
-            var registeredAccount = await authService.RegisterAsync(model);
+            var registeredAccount = await authService.RegisterAccountAsync(model);
             if (registeredAccount == null)
             {
                 return BadRequest("Username already exists.");

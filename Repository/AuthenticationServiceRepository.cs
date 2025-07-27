@@ -54,7 +54,7 @@ namespace CAMS_API.Repository
             };
         }
 
-        public async Task<Account> RegisterAsync(AccountRegisterModel model)
+        public async Task<Account> RegisterAccountAsync(RegisterModel model)
         {
             var existingUsername = await uow.Accounts.FindAccountByUsername(model.Username);
 

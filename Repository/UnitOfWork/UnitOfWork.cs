@@ -1,6 +1,7 @@
 ﻿using CAMS_API.Data;
 using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Service;
 
 namespace CAMS_API.Repository.UnitOfWork
 {
@@ -21,7 +22,7 @@ namespace CAMS_API.Repository.UnitOfWork
 
         public IPositionRepository Positions { get; private set; }
 
-        
+        public IAuthenticationServiceRepository AuthenticationService { get; private set; }
 
         public UnitOfWork(ApplicationDbContext dbContext)
         {

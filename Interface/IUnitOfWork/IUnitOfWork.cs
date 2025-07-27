@@ -1,10 +1,13 @@
-﻿namespace CAMS_API.Interface.IUnitOfWork
+﻿using CAMS_API.Service;
+
+namespace CAMS_API.Interface.IUnitOfWork
 {
     public interface IUnitOfWork
     {
         IAccountRepository Accounts { get; }
         IAssetRepository Assets { get; }
         IAssetRequestHeaderRepository AssetRequestHeaders { get; }
+        IAuthenticationServiceRepository AuthenticationService { get; }
         IDepartmentRepository Departments { get; }
         IDeviceRepository Devices { get; }
         IEmployeeRepository Employees { get; }
