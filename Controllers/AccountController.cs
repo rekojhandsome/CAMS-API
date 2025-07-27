@@ -19,7 +19,7 @@ namespace CAMS_API.Controllers
             this.mapper = mapper;
         }
 
-        [HttpGet("Accounts")]
+        [HttpGet("accounts")]
         public async Task<ActionResult<IEnumerable<AccountModel>>> GetAccounts()
         {
             var accounts = await uow.Accounts.GetAccountsAsync();

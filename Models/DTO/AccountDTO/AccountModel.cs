@@ -4,7 +4,6 @@
     {
         public required string Username { get; set; } = string.Empty;
         public required string Role { get; set; } = string.Empty;
-        public int EmployeeID { get; set; }
 
     }
 }

@@ -8,5 +8,6 @@ namespace CAMS_API.Interface
         Task<Employee> GetEmployeeByIDAsync(int id);
         Task<Employee> CreateEmployeeAsync(Employee employee);
         void DeleteEmployee(Employee employee);
+        Task<Employee> GetEmployeeProfile(int accountID);
     }
 }

@@ -8,7 +8,9 @@ namespace CAMS_API.Profiles
     {
         public EmployeeMappingProfile()
         {
-            CreateMap<Employee, EmployeeModel>();
+            CreateMap<Employee, EmployeeModel>()
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Department != null ? src.Department.DepartmentName : null))
+                .ForMember(dest => dest.PositionName, opt => opt.MapFrom(src => src.Position != null ? src.Position.PositionName : null));
             CreateMap<EmployeeModel, Employee>();
         }
     }

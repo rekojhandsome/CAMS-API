@@ -128,8 +128,8 @@ namespace CAMS_API.Repository
             {
                 new Claim(ClaimTypes.Name, account.Username),
                 new Claim(ClaimTypes.NameIdentifier, account.AccountID.ToString()),
-                new Claim(ClaimTypes.Role, account.Role)
-
+                new Claim(ClaimTypes.Role, account.Role),
+                new Claim("LoginID", account.AccountID.ToString()),
             };
 
             var key = new SymmetricSecurityKey(

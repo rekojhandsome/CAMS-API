@@ -2,6 +2,7 @@
 using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.EmployeeDTO;
 using CAMS_API.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -85,6 +86,30 @@ namespace CAMS_API.Controllers
             await uow.CompleteAsync();
 
             return Ok("Employee deleted successfully.");
+        }
+
+        [Authorize]
+        [HttpGet("profile")]
+        public async Task<ActionResult<EmployeeModel>> GetEmployeeProfile()
+        {
+            var loginID = User.FindFirst("LoginID")?.Value;
+
+            if (loginID == null || !int.TryParse(loginID, out int accountID))
+            {
+                return Unauthorized(new { message = "Invalid Token or user not authenticated." });
+            }
+
+            var employee = await uow.Employees.GetEmployeeProfile(accountID);
+
+            if (employee == null)
+            {
+                return NotFound(new {message = "Employee not found."});
+            }
+
+            var employeeModel = mapper.Map<EmployeeModel>(employee);
+
+            return Ok(employeeModel);
+
         }
 
     }

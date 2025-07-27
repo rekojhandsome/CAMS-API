@@ -29,6 +29,21 @@ namespace CAMS_API.Repository
             return await dbContext.Employees.FirstOrDefaultAsync(e => e.EmployeeID == id);
         }
 
+        public async Task<Employee> GetEmployeeProfile(int accountID)
+        {
+            //return await dbContext.Accounts.Where(a => a.AccountID == accountID)
+            //    .Include(a => a.Employee).FirstOrDefaultAsync();
+
+            var account = await dbContext.Accounts
+                .Include(a => a.Employee)
+                    .ThenInclude(e => e.Department)
+                .Include(a => a.Employee)
+                    .ThenInclude(e => e.Position)
+                .FirstOrDefaultAsync(a => a.AccountID == accountID);
+
+            return account?.Employee ?? throw new KeyNotFoundException($"Employee with AccountID {accountID} not found.");
+        }
+
         public async Task<IEnumerable<Employee>> GetEmployeesAsync()
         {
             return await dbContext.Employees.ToListAsync();
