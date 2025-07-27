@@ -31,7 +31,9 @@ namespace CAMS_API.Repository
 
         public async Task<IEnumerable<AssetRequestHeader>> GetAssetRequestHeadersAsync()
         {
-            return await dbContext.AssetRequestHeaders.ToListAsync();
+            return await dbContext.AssetRequestHeaders
+                .Include(arh => arh.AssetRequestDetails)
+                .ToListAsync();
         }
     }
 }

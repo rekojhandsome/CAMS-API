@@ -2,11 +2,11 @@
 {
     public class AssetModel
     {
-        public int deviceID { get; set; }
-        public required string assetTag { get; set; }
-        public required string serialNumber { get; set; }
-        public DateTime dateAcquired { get; set; }
-        public int price { get; set; }
-        public required string status { get; set; }
+        public int DeviceID { get; set; }
+        public required string AssetName { get; set; }
+        public required string SerialNumber { get; set; }
+        public DateTime DateAcquired { get; set; }
+        public int Price { get; set; }
+        public required string Status { get; set; }
     }
 }
