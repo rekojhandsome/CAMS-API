@@ -2,6 +2,7 @@
 using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
 using CAMS_API.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,15 +44,41 @@ namespace CAMS_API.Controllers
             return Ok(assetRequestHeaderModel);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<ActionResult<AssetRequestHeaderModel>> CreateAssetRequestHeader([FromBody] AssetRequestHeaderModel model)
         {
-            var assetRequestHeader = mapper.Map<AssetRequestHeaderModel, AssetRequestHeader>(model);
+            //var assetRequestHeader = mapper.Map<AssetRequestHeaderModel, AssetRequestHeader>(model);
+
+            //await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
+            //await uow.CompleteAsync();
+
+            //return CreatedAtAction(nameof(GetAssetRequestHeader), new { id = assetRequestHeader.AssetRequestID }, model);
+
+            var loginID = User.FindFirst("loginID")?.Value;
+
+            if (loginID == null || !int.TryParse(loginID, out int accountID))
+            {
+                return Unauthorized("Invalid token or user not authenticated.");
+            }
+
+            var employee = await uow.Employees.GetEmployeeProfile(accountID);
+
+            if (employee == null)
+            {
+                return NotFound("Employee not found.");
+            }
+
+            var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
+            assetRequestHeader.EmployeeID = employee.EmployeeID;
+
 
             await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
             await uow.CompleteAsync();
 
-            return CreatedAtAction(nameof(GetAssetRequestHeader), new { id = assetRequestHeader.AssetRequestID }, model);
+            var assetRequestHeaderModel = mapper.Map<AssetRequestHeaderResponseModel>(assetRequestHeader);
+
+            return Ok(assetRequestHeaderModel);
         }
 
         [HttpPut("{id:int}")]

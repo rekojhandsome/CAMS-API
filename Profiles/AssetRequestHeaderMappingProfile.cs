@@ -10,6 +10,13 @@ namespace CAMS_API.Profiles
         {
             CreateMap<AssetRequestHeaderModel, AssetRequestHeader>();
             CreateMap<AssetRequestHeader, AssetRequestHeaderModel>();
+
+            CreateMap<AssetRequestHeader, AssetRequestHeaderResponseModel>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Employee != null ? src.Employee.FirstName : null))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Employee != null ? src.Employee.LastName : null))
+                .ForMember(dest => dest.PositionName, opt => opt.MapFrom(src => src.Employee.Position != null ? src.Employee.Position.PositionName : null))
+                .ForMember(dest => dest.DepartmentName, opt => opt.MapFrom(src => src.Employee.Department != null ? src.Employee.Department.DepartmentName : null));
+
         }
     }
 }
