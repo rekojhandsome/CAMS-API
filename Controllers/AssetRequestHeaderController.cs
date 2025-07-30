@@ -48,13 +48,6 @@ namespace CAMS_API.Controllers
         [HttpPost]
         public async Task<ActionResult<AssetRequestHeaderModel>> CreateAssetRequestHeader([FromBody] AssetRequestHeaderModel model)
         {
-            //var assetRequestHeader = mapper.Map<AssetRequestHeaderModel, AssetRequestHeader>(model);
-
-            //await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
-            //await uow.CompleteAsync();
-
-            //return CreatedAtAction(nameof(GetAssetRequestHeader), new { id = assetRequestHeader.AssetRequestID }, model);
-
             var loginID = User.FindFirst("loginID")?.Value;
 
             if (loginID == null || !int.TryParse(loginID, out int accountID))
@@ -69,14 +62,50 @@ namespace CAMS_API.Controllers
                 return NotFound("Employee not found.");
             }
 
-            var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
-            assetRequestHeader.EmployeeID = employee.EmployeeID;
+            //CASE 1: ARH id exists, increment sequenceID
+            if (model.AssetRequestID.HasValue)
+            {
+                var existingAssetRequestHeader = await uow.AssetRequestHeaders.GetAssetRequestHeaderIDAsync((int)model.AssetRequestID);
+                if (existingAssetRequestHeader == null)
+                {
+                    return NotFound($"Asset Request Header with ID {model.AssetRequestID} is not found.");
+                }
 
+                var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync((int)model.AssetRequestID);
+                
+                foreach (var detail in model.AssetRequestDetails)
+                {
+                    var newDetail = mapper.Map<AssetRequestDetail>(detail);
+                    newDetail.AssetRequestID = (int)model.AssetRequestID;
+                    newDetail.SequenceID = ++maxSequenceID;
+                    existingAssetRequestHeader.AssetRequestDetails.Add(newDetail);
+                }
 
-            await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
+                await uow.CompleteAsync();
+                var updatedAssetRequestHeaderModel = mapper.Map<AssetRequestHeader, AssetRequestHeaderResponseModel>(existingAssetRequestHeader);
+            }
+
+            //CASE 2: ARH id does not exist, create new ARH
+            var newAssetRequestHeader = mapper.Map<AssetRequestHeader>(model);
+            newAssetRequestHeader.EmployeeID = employee.EmployeeID;
+
+            int sequenceID = 1;
+            foreach (var detail in newAssetRequestHeader.AssetRequestDetails)
+            {
+                detail.SequenceID = sequenceID++;
+            }
+
+            await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(newAssetRequestHeader);
             await uow.CompleteAsync();
 
-            var assetRequestHeaderModel = mapper.Map<AssetRequestHeaderResponseModel>(assetRequestHeader);
+            //var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
+            //assetRequestHeader.EmployeeID = employee.EmployeeID;
+
+
+            //await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
+            //await uow.CompleteAsync();
+
+            var assetRequestHeaderModel = mapper.Map<AssetRequestHeaderResponseModel>(newAssetRequestHeader);
 
             return Ok(assetRequestHeaderModel);
         }

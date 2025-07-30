@@ -6,6 +6,7 @@ namespace CAMS_API.Interface.IUnitOfWork
     {
         IAccountRepository Accounts { get; }
         IAssetRepository Assets { get; }
+        IAssetRequestDetailRepository AssetRequestDetails { get; }
         IAssetRequestHeaderRepository AssetRequestHeaders { get; }
         IAuthenticationServiceRepository AuthenticationService { get; }
         IDepartmentRepository Departments { get; }
