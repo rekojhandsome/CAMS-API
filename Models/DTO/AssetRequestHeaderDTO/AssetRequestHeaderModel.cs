@@ -7,7 +7,6 @@ namespace CAMS_API.Models.DTO.AssetRequestHeaderDTO
     {
         public DateTime assetRequestDate { get; set; } = DateTime.UtcNow;
         public string? status { get; set; }
-        public decimal totalAssetValue { get; set; }
         public bool requiresApproval { get; set; }
 
         public ICollection<AssetRequestDetailModel> AssetRequestDetails { get; set; } = new List<AssetRequestDetailModel>();

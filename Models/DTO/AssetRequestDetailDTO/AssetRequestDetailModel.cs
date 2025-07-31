@@ -3,6 +3,6 @@
     public class AssetRequestDetailModel
     {
         public int assetID { get; set; }
-        public decimal assetValue { get; set; }
+        public decimal Price { get; set; }
     }
 }

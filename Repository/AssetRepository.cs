@@ -24,6 +24,14 @@ namespace CAMS_API.Repository
             dbContext.Assets.Remove(asset);
         }
 
+        public async Task<int?> FindAssetPrice(int assetID)
+        {
+            return await dbContext.Assets
+                .Where(a => a.AssetID == assetID)
+                .Select(a => (int?)a.Price)
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Asset> GetAssetByIDAsync(int id)
         {
             return await dbContext.Assets.FirstOrDefaultAsync(a => a.AssetID == id);

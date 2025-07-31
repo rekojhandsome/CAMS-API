@@ -106,7 +106,7 @@ namespace CAMS_API.Migrations
                     b.Property<int>("AssetID")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("AssetValue")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("AssetRequestID", "SequenceID");

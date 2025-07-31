@@ -10,14 +10,13 @@ namespace CAMS_API.Models.DTO.AssetRequestHeaderDTO
         public string? PositionName { get; set; }
         public string? DepartmentName { get; set; }
         public string? Status { get; set; }
-        public decimal TotalAssetValue { get; set; }
         public bool RequiresApproval { get; set; }
 
-        public ICollection<AssetRequestDetailModel> AssetRequestDetails { get; set; } = new List<AssetRequestDetailModel>();
+        public ICollection<AssetRequestDetailResponseModel> AssetRequestDetails { get; set; } = new List<AssetRequestDetailResponseModel>();
 
         public AssetRequestHeaderResponseModel()
         {
-            AssetRequestDetails = new List<AssetRequestDetailModel>();
+            AssetRequestDetails = new List<AssetRequestDetailResponseModel>();
         }
     }
 }

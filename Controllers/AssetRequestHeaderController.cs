@@ -22,11 +22,11 @@ namespace CAMS_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AssetRequestHeaderModel>>> GetAssetRequestHeaders()
+        public async Task<ActionResult<IEnumerable<AssetRequestHeaderResponseModel>>> GetAssetRequestHeaders()
         {
             var assetRequestHeaders = await uow.AssetRequestHeaders.GetAssetRequestHeadersAsync();
 
-            var assetRequestHeaderModels = mapper.Map<IEnumerable<AssetRequestHeader>, IEnumerable<AssetRequestHeaderModel>>(assetRequestHeaders);
+            var assetRequestHeaderModels = mapper.Map<IEnumerable<AssetRequestHeaderResponseModel>>(assetRequestHeaders);
 
             return Ok(assetRequestHeaderModels);
         }
@@ -67,10 +67,22 @@ namespace CAMS_API.Controllers
 
             var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
             assetRequestHeader.EmployeeID = employee.EmployeeID;
+            assetRequestHeader.Status = "Pending";
+
+           
 
             foreach (var item in assetRequestHeader.AssetRequestDetails)
             {
                 item.SequenceID = sequenceID;
+
+                var assetPrice = await uow.Assets.FindAssetPrice(item.AssetID);
+
+                if (assetPrice == null)
+                {
+                    return NotFound($"Asset with ID {item.AssetID} not found.");
+                }
+
+                item.Price = assetPrice.Value;
             }
 
             await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);

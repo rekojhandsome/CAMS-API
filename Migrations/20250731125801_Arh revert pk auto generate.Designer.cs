@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CAMS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250731123457_arh revert pk auto generate")]
-    partial class arhrevertpkautogenerate
+    [Migration("20250731125801_Arh revert pk auto generate")]
+    partial class Arhrevertpkautogenerate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -109,7 +109,7 @@ namespace CAMS_API.Migrations
                     b.Property<int>("AssetID")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("AssetValue")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("AssetRequestID", "SequenceID");

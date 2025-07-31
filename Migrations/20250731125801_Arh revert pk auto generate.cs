@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CAMS_API.Migrations
 {
     /// <inheritdoc />
-    public partial class arhrevertpkautogenerate : Migration
+    public partial class Arhrevertpkautogenerate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -168,7 +168,7 @@ namespace CAMS_API.Migrations
                     AssetRequestID = table.Column<int>(type: "int", nullable: false),
                     SequenceID = table.Column<int>(type: "int", nullable: false),
                     AssetID = table.Column<int>(type: "int", nullable: false),
-                    AssetValue = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
                 },
                 constraints: table =>
                 {
