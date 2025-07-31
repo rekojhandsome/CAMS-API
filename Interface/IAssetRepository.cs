@@ -8,6 +8,7 @@ namespace CAMS_API.Interface
         Task<Asset> GetAssetByIDAsync(int id);
         Task<Asset> CreateAssetAsync(Asset asset);
         Task<Asset> UpdateAssetAsync(Asset asset);
+        Task<int?> FindAssetPrice(int assetID);
         void DeleteAsset(Asset asset);
     }
 }
