@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace CAMS_API.Migrations
 {
     /// <inheritdoc />
-    public partial class addedaccounttable : Migration
+    public partial class arhrevertpkautogenerate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -190,7 +190,8 @@ namespace CAMS_API.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Accounts_EmployeeID",
                 table: "Accounts",
-                column: "EmployeeID");
+                column: "EmployeeID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Asset_DeviceID",

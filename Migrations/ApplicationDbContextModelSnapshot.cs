@@ -312,7 +312,7 @@ namespace CAMS_API.Migrations
             modelBuilder.Entity("CAMS_API.Models.Entities.AssetRequestHeader", b =>
                 {
                     b.HasOne("CAMS_API.Models.Entities.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("AssetRequestHeaders")
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -362,6 +362,8 @@ namespace CAMS_API.Migrations
             modelBuilder.Entity("CAMS_API.Models.Entities.Employee", b =>
                 {
                     b.Navigation("Account");
+
+                    b.Navigation("AssetRequestHeaders");
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Position", b =>

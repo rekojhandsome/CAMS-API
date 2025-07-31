@@ -10,6 +10,12 @@ namespace CAMS_API.Configuration
         {
             builder.ToTable("Employees")
                 .HasKey(e => e.EmployeeID);
+
+            //Relationship ARH to Employee 1:N
+            builder.HasMany(a => a.AssetRequestHeaders)
+                .WithOne(arh => arh.Employee)
+                .HasForeignKey(arh => arh.EmployeeID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

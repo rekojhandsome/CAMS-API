@@ -10,6 +10,9 @@ namespace CAMS_API.Profiles
         {
             CreateMap<AssetRequestDetail, AssetRequestDetailModel>();
             CreateMap<AssetRequestDetailModel, AssetRequestDetail>();
+
+            CreateMap<AssetRequestDetail, AssetRequestDetailResponseModel>();
+            CreateMap<AssetRequestDetailResponseModel, AssetRequestDetail>();
         }
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CAMS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250718095514_added account table")]
-    partial class addedaccounttable
+    [Migration("20250731123457_arh revert pk auto generate")]
+    partial class arhrevertpkautogenerate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -56,9 +56,10 @@ namespace CAMS_API.Migrations
 
                     b.HasKey("AccountID");
 
-                    b.HasIndex("EmployeeID");
+                    b.HasIndex("EmployeeID")
+                        .IsUnique();
 
-                    b.ToTable("Accounts");
+                    b.ToTable("Accounts", (string)null);
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Asset", b =>
@@ -275,8 +276,8 @@ namespace CAMS_API.Migrations
             modelBuilder.Entity("CAMS_API.Models.Entities.Account", b =>
                 {
                     b.HasOne("CAMS_API.Models.Entities.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeID")
+                        .WithOne("Account")
+                        .HasForeignKey("CAMS_API.Models.Entities.Account", "EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -314,7 +315,7 @@ namespace CAMS_API.Migrations
             modelBuilder.Entity("CAMS_API.Models.Entities.AssetRequestHeader", b =>
                 {
                     b.HasOne("CAMS_API.Models.Entities.Employee", "Employee")
-                        .WithMany()
+                        .WithMany("AssetRequestHeaders")
                         .HasForeignKey("EmployeeID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -359,6 +360,13 @@ namespace CAMS_API.Migrations
             modelBuilder.Entity("CAMS_API.Models.Entities.Device", b =>
                 {
                     b.Navigation("Assets");
+                });
+
+            modelBuilder.Entity("CAMS_API.Models.Entities.Employee", b =>
+                {
+                    b.Navigation("Account");
+
+                    b.Navigation("AssetRequestHeaders");
                 });
 
             modelBuilder.Entity("CAMS_API.Models.Entities.Position", b =>

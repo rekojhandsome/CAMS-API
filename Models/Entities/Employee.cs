@@ -21,5 +21,12 @@ namespace CAMS_API.Models.Entities
         public Position? Position { get; set; }
         public Account? Account { get; set; }
 
+        public ICollection<AssetRequestHeader> AssetRequestHeaders { get; set; } = new List<AssetRequestHeader>();
+        public Employee()
+        {
+            AssetRequestHeaders = new List<AssetRequestHeader>();
+        }
+
+
     }
 }

@@ -22,17 +22,17 @@ namespace CAMS_API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeModel>>> GetEmployees()
+        public async Task<ActionResult<IEnumerable<EmployeeResponseModel>>> GetEmployees()
         {
             var employees = await uow.Employees.GetEmployeesAsync();
 
-            var employeeModels = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeModel>>(employees);
+            var employeeModels = mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeResponseModel>>(employees);
 
             return Ok(employeeModels);
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<EmployeeModel>> GetEmployee(int id)
+        public async Task<ActionResult<EmployeeResponseModel>> GetEmployee(int id)
         {
             var findEmployee = await uow.Employees.GetEmployeeByIDAsync(id);
 
@@ -41,7 +41,7 @@ namespace CAMS_API.Controllers
                 return NotFound($"Employee with ID {id} is not found.");
             }
 
-            var employeeModel = mapper.Map<Employee, EmployeeModel>(findEmployee);
+            var employeeModel = mapper.Map<Employee, EmployeeResponseModel>(findEmployee);
             return Ok(employeeModel);
         }
 
@@ -57,7 +57,7 @@ namespace CAMS_API.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public async Task<ActionResult<EmployeeModel>> UpdateEmployee([FromBody] EmployeeModel model, int id)
+        public async Task<ActionResult<EmployeeResponseModel>> UpdateEmployee([FromBody] EmployeeResponseModel model, int id)
         {
             var existingEmployee = await uow.Employees.GetEmployeeByIDAsync(id);
 
@@ -66,10 +66,10 @@ namespace CAMS_API.Controllers
                 return NotFound($"Employee with ID {id} is not found.");
             }
 
-            var employee = mapper.Map<EmployeeModel, Employee>(model);
+            var employee = mapper.Map<EmployeeResponseModel, Employee>(model);
             await uow.CompleteAsync();
 
-            var updatedEmployee = mapper.Map<Employee, EmployeeModel>(employee);
+            var updatedEmployee = mapper.Map<EmployeeResponseModel>(employee);
             return Ok(updatedEmployee);
         }
 
@@ -90,7 +90,7 @@ namespace CAMS_API.Controllers
 
         [Authorize]
         [HttpGet("profile")]
-        public async Task<ActionResult<EmployeeModel>> GetEmployeeProfile()
+        public async Task<ActionResult<EmployeeResponseModel>> GetEmployeeProfile()
         {
             var loginID = User.FindFirst("LoginID")?.Value;
 
@@ -106,7 +106,7 @@ namespace CAMS_API.Controllers
                 return NotFound(new {message = "Employee not found."});
             }
 
-            var employeeModel = mapper.Map<EmployeeModel>(employee);
+            var employeeModel = mapper.Map<EmployeeResponseModel>(employee);
 
             return Ok(employeeModel);
 

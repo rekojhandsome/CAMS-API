@@ -1,6 +1,6 @@
 ﻿namespace CAMS_API.Models.DTO.EmployeeDTO
 {
-    public class EmployeeModel
+    public class EmployeeResponseModel
     {
         public required string FirstName { get; set; }
         public string? MiddleName { get; set; }
@@ -11,7 +11,7 @@
         public int ContactNo { get; set; }
         public required string Email { get; set; }
         public required DateTime DateHired { get; set; }
-        public int PositionID { get; set; }
-        public int DepartmentID { get; set; }
+        public string? PositionName{ get; set; }
+        public string? DepartmentName { get; set; }
     }
 }

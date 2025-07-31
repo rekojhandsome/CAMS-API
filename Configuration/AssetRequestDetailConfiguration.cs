@@ -15,11 +15,6 @@ namespace CAMS_API.Configuration
                     ard.SequenceID
                 });
 
-            //builder.HasOne(ard => ard.AssetRequestHeader)
-            //    .WithMany(ard => ard.AssetRequestDetails)
-            //    .HasForeignKey(ard => ard.AssetRequestID)
-            //    .OnDelete(DeleteBehavior.Cascade);
-
             builder.Property(ard => ard.SequenceID)
                 .IsRequired()
                 .ValueGeneratedNever();
