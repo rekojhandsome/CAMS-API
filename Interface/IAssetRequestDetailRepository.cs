@@ -4,6 +4,7 @@ namespace CAMS_API.Interface
 {
     public interface IAssetRequestDetailRepository
     {
+        Task<AssetRequestDetail> CreateAssetRequestDetailAsync(AssetRequestDetail assetRequestDetail);
         Task<int> FindMaxSequenceIDAsync(int assetRequestID);
     }
 }

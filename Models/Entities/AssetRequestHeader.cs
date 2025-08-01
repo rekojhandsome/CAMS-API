@@ -3,7 +3,7 @@
     public class AssetRequestHeader
     {
         public int AssetRequestID { get; set; }
-        public DateTime AssetRequestDate { get; set; } = DateTime.UtcNow;
+        public DateTime AssetRequestDate { get; set; } 
         public int EmployeeID { get; set; }
         public string? Status { get; set; }
         public decimal TotalAssetValue { get; set; }

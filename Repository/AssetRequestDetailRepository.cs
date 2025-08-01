@@ -13,6 +13,13 @@ namespace CAMS_API.Repository
         {
             this.dbContext = dbContext;
         }
+
+        public async Task<AssetRequestDetail> CreateAssetRequestDetailAsync(AssetRequestDetail assetRequestDetail)
+        {
+            await dbContext.AddAsync(assetRequestDetail);
+            return assetRequestDetail;
+        }
+
         public async Task<int> FindMaxSequenceIDAsync(int assetRequestID)
         {
             return await dbContext.AssetRequestDetails
