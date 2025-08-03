@@ -8,7 +8,7 @@ namespace CAMS_API.Interface
         Task<AssetRequestHeader> GetAssetRequestHeaderByIDAsync(int id);
         Task<AssetRequestHeader> CreateAssetRequestHeaderAsync(AssetRequestHeader assetRequestHeader);
         void DeleteAssetRequestHeader(AssetRequestHeader assetRequestHeader);
-        Task<AssetRequestHeader> GetAssetRequestHeaderIDAsync(int employeeID);
+        Task<AssetRequestHeader> GetAssetRequestHeaderByEmployeeAsync(int employeeID);
 
     }
 }

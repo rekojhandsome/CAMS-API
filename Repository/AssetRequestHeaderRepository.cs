@@ -29,23 +29,11 @@ namespace CAMS_API.Repository
             return await dbContext.AssetRequestHeaders.FirstOrDefaultAsync(arh => arh.AssetRequestID == id);
         }
 
-        public async Task<AssetRequestHeader> GetAssetRequestHeaderIDAsync(int employeeID)
+        public async Task<AssetRequestHeader> GetAssetRequestHeaderByEmployeeAsync(int employeeID)
         {
-            //var id = await dbContext.AssetRequestHeaders.MaxAsync(arh => (int?)arh.AssetRequestID);
-            // return new AssetRequestHeader
-            // {
-            //     AssetRequestID = id.GetValueOrDefault() + 1,
-            //     AssetRequestDate = DateTime.UtcNow,
-            //     EmployeeID = 0,
-            //     Status = "Pending",
-            //     TotalAssetValue = 0,
-            //     RequiresApproval = false,
-            //     AssetRequestDetails = { }
-
-
-            // };
-
-            return await dbContext.AssetRequestHeaders.FirstOrDefaultAsync(arh => arh.EmployeeID == employeeID);
+            return await dbContext.AssetRequestHeaders
+                .Where(arh => arh.EmployeeID == employeeID && arh.Status == "Draft")
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<AssetRequestHeader>> GetAssetRequestHeadersAsync()

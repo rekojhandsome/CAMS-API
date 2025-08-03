@@ -33,6 +33,7 @@ namespace CAMS_API.Repository.UnitOfWork
             Accounts = new AccountRepository(dbContext);
             Assets = new AssetRepository(dbContext);
             AssetRequestHeaders = new AssetRequestHeaderRepository(dbContext);
+            AssetRequestDetails = new AssetRequestDetailRepository(dbContext);
             Departments = new DepartmentRepository(dbContext);
             Devices = new DeviceRepository(dbContext);
             Employees = new EmployeeRepository(dbContext);

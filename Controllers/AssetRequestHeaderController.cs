@@ -145,7 +145,7 @@ namespace CAMS_API.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<ActionResult<int>> CreateAssetRequestHeaderTry([FromBody] AssetRequestHeaderModel model)
+        public async Task<ActionResult<int>> CreateAssetRequestHeader([FromBody] AssetRequestHeaderModel model)
         {
             var loginID = User.FindFirst("loginID")?.Value;
 
@@ -161,6 +161,7 @@ namespace CAMS_API.Controllers
             }
             var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
             assetRequestHeader.EmployeeID = employee.EmployeeID;
+            assetRequestHeader.Status = "Draft";
 
             await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
             await uow.CompleteAsync();
@@ -169,7 +170,7 @@ namespace CAMS_API.Controllers
         }
 
         [Authorize]
-        [HttpPost("api/AssetRequestHeaders/details")]
+        [HttpPost("details")]
         public async Task<ActionResult<AssetRequestDetailModel>> CreateAssetRequestDetail([FromBody] AssetRequestDetailModel model)
         {
             var loginID = User.FindFirst("loginID")?.Value;
@@ -185,13 +186,14 @@ namespace CAMS_API.Controllers
                 return NotFound("Employee not found.");
             }
 
-            var assetRequestHeaderID = await uow.AssetRequestHeaders.GetAssetRequestHeaderIDAsync(employee.EmployeeID);
-            if (assetRequestHeaderID == null)
+            var headerID = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
+            if (headerID == null)
             {
                 return NotFound("Not found");
             }
 
-            var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync(assetRequestHeaderID.AssetRequestID);
+            Console.WriteLine($"AssetRequestHeaderID: {headerID?.AssetRequestID}");
+            //var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync(assetRequestHeaderID.AssetRequestID);
 
             var price = await uow.Assets.FindAssetPrice(model.assetID);
             if (price == null)
@@ -199,17 +201,71 @@ namespace CAMS_API.Controllers
                 return NotFound($"Asset with ID {model.assetID} not found.");
             }
 
+            var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync(headerID.AssetRequestID);
+
+            int sequenceID = ((int?)maxSequenceID ?? 0) + 1;
+
+
             var detail = new AssetRequestDetail
             {
-                AssetRequestID = assetRequestHeaderID.AssetRequestID,
-                SequenceID = maxSequenceID + 1,
+                AssetRequestID = headerID.AssetRequestID,
+                SequenceID = sequenceID,
                 AssetID = model.assetID,
                 Price = price.Value
             };
-
+            
             await uow.AssetRequestDetails.CreateAssetRequestDetailAsync(detail);
-            return Ok($"AssetRequestDetail added to AssetRequestID {assetRequestHeaderID.AssetRequestID}");
+            await uow.CompleteAsync();
+
+            var assetRequestDetailModel = mapper.Map<AssetRequestDetailResponseModel>(detail);
+            return Ok(assetRequestDetailModel);
         }
+
+        //[Authorize]
+        //[HttpPost("with-details")]
+        //public async Task<ActionResult<int>> CreateAssetRequestWithDetails([FromBody] AssetRequestHeaderModel model)
+        //{
+        //    var loginID = User.FindFirst("loginID")?.Value;
+
+        //    if (loginID == null || !int.TryParse(loginID, out int accountID))
+        //        return Unauthorized("Invalid token or user not authenticated.");
+
+        //    var employee = await uow.Employees.GetEmployeeProfile(accountID);
+        //    if (employee == null)
+        //        return NotFound("Employee not found.");
+
+        //    // Map and assign EmployeeID
+        //    var headerEntity = mapper.Map<AssetRequestHeader>(model);
+        //    headerEntity.EmployeeID = employee.EmployeeID;
+
+        //    // Add the header first
+        //    //await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(headerEntity);
+        //    //await uow.CompleteAsync(); // This generates the AssetRequestID
+
+        //    int sequenceID = 1;
+
+        //    // Add each detail
+        //    foreach (var item in model.AssetRequestDetails)
+        //    {
+        //        var price = await uow.Assets.FindAssetPrice(item.assetID);
+        //        if (price == null)
+        //            return NotFound($"Asset with ID {item.assetID} not found.");
+
+        //        var detail = new AssetRequestDetail
+        //        {
+        //            AssetRequestID = headerEntity.AssetRequestID,
+        //            SequenceID = sequenceID++,
+        //            AssetID = item.assetID,
+        //            Price = price.Value
+        //        };
+
+        //        await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(headerEntity);
+        //    }
+
+        //    await uow.CompleteAsync(); // Save details
+
+        //    return Ok(headerEntity.AssetRequestID);
+        //}
 
         [HttpPut("{id:int}")]
         public async Task<ActionResult<AssetRequestHeaderModel>> UpdateAssetRequestHeader([FromBody] AssetRequestHeaderModel model, int id)
