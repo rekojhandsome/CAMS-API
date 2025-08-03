@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CAMS_API.Models.DTO.AssetRequestDetailDTO;
+using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
 using CAMS_API.Models.Entities;
 
 namespace CAMS_API.Profiles
@@ -13,6 +14,8 @@ namespace CAMS_API.Profiles
 
             CreateMap<AssetRequestDetail, AssetRequestDetailResponseModel>();
             CreateMap<AssetRequestDetailResponseModel, AssetRequestDetail>();
+
+            CreateMap<AssetRequestDetail, AssetRequestHeaderResponseModel>();
         }
     }
 }

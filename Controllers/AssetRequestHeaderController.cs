@@ -5,6 +5,7 @@ using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
 using CAMS_API.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection.PortableExecutable;
 
 namespace CAMS_API.Controllers
 {
@@ -186,13 +187,13 @@ namespace CAMS_API.Controllers
                 return NotFound("Employee not found.");
             }
 
-            var headerID = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
-            if (headerID == null)
+            var header = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
+            if (header == null)
             {
                 return NotFound("Not found");
             }
 
-            Console.WriteLine($"AssetRequestHeaderID: {headerID?.AssetRequestID}");
+            Console.WriteLine($"AssetRequestHeaderID: {header?.AssetRequestID}");
             //var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync(assetRequestHeaderID.AssetRequestID);
 
             var price = await uow.Assets.FindAssetPrice(model.assetID);
@@ -201,72 +202,33 @@ namespace CAMS_API.Controllers
                 return NotFound($"Asset with ID {model.assetID} not found.");
             }
 
-            var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync(headerID.AssetRequestID);
+            var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync(header.AssetRequestID);
 
             int sequenceID = ((int?)maxSequenceID ?? 0) + 1;
 
 
             var detail = new AssetRequestDetail
             {
-                AssetRequestID = headerID.AssetRequestID,
+                AssetRequestID = header.AssetRequestID,
                 SequenceID = sequenceID,
                 AssetID = model.assetID,
                 Price = price.Value
             };
             
             await uow.AssetRequestDetails.CreateAssetRequestDetailAsync(detail);
+
+            if (header.Status == "Draft")
+            {
+                header.Status = "Pending";
+            }
+
             await uow.CompleteAsync();
 
             var assetRequestDetailModel = mapper.Map<AssetRequestDetailResponseModel>(detail);
             return Ok(assetRequestDetailModel);
         }
 
-        //[Authorize]
-        //[HttpPost("with-details")]
-        //public async Task<ActionResult<int>> CreateAssetRequestWithDetails([FromBody] AssetRequestHeaderModel model)
-        //{
-        //    var loginID = User.FindFirst("loginID")?.Value;
-
-        //    if (loginID == null || !int.TryParse(loginID, out int accountID))
-        //        return Unauthorized("Invalid token or user not authenticated.");
-
-        //    var employee = await uow.Employees.GetEmployeeProfile(accountID);
-        //    if (employee == null)
-        //        return NotFound("Employee not found.");
-
-        //    // Map and assign EmployeeID
-        //    var headerEntity = mapper.Map<AssetRequestHeader>(model);
-        //    headerEntity.EmployeeID = employee.EmployeeID;
-
-        //    // Add the header first
-        //    //await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(headerEntity);
-        //    //await uow.CompleteAsync(); // This generates the AssetRequestID
-
-        //    int sequenceID = 1;
-
-        //    // Add each detail
-        //    foreach (var item in model.AssetRequestDetails)
-        //    {
-        //        var price = await uow.Assets.FindAssetPrice(item.assetID);
-        //        if (price == null)
-        //            return NotFound($"Asset with ID {item.assetID} not found.");
-
-        //        var detail = new AssetRequestDetail
-        //        {
-        //            AssetRequestID = headerEntity.AssetRequestID,
-        //            SequenceID = sequenceID++,
-        //            AssetID = item.assetID,
-        //            Price = price.Value
-        //        };
-
-        //        await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(headerEntity);
-        //    }
-
-        //    await uow.CompleteAsync(); // Save details
-
-        //    return Ok(headerEntity.AssetRequestID);
-        //}
-
+        
         [HttpPut("{id:int}")]
         public async Task<ActionResult<AssetRequestHeaderModel>> UpdateAssetRequestHeader([FromBody] AssetRequestHeaderModel model, int id)
         {
