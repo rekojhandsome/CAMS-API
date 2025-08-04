@@ -6,5 +6,6 @@ namespace CAMS_API.Interface
     {
         Task<AssetRequestDetail> CreateAssetRequestDetailAsync(AssetRequestDetail assetRequestDetail);
         Task<int> FindMaxSequenceIDAsync(int assetRequestID);
+        Task<Decimal> GetTotalAssetValueAsync(int assetRequestHeaderID);
     }
 }

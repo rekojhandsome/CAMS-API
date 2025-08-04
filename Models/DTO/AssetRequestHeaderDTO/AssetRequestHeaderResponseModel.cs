@@ -10,6 +10,7 @@ namespace CAMS_API.Models.DTO.AssetRequestHeaderDTO
         public string? PositionName { get; set; }
         public string? DepartmentName { get; set; }
         public string? Status { get; set; }
+        public int TotalAssetValue { get; set; }
         public bool RequiresApproval { get; set; }
 
         public ICollection<AssetRequestDetailResponseModel> AssetRequestDetails { get; set; } = new List<AssetRequestDetailResponseModel>();

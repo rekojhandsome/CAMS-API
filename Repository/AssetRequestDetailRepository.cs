@@ -26,5 +26,14 @@ namespace CAMS_API.Repository
                 .Where(ard => ard.AssetRequestID == assetRequestID)
                 .MaxAsync(ard => (int?)ard.SequenceID) ?? 0;
         }
+
+        public async Task<decimal> GetTotalAssetValueAsync(int assetRequestHeaderID)
+        {
+            var total = await dbContext.AssetRequestDetails
+                .Where(ard => ard.AssetRequestID == assetRequestHeaderID)
+                .SumAsync(ard => ard.Price);
+
+            return total;
+        }
     }
 }
