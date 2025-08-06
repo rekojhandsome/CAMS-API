@@ -22,6 +22,7 @@ namespace CAMS_API.Controllers
             this.mapper = mapper;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<AssetRequestHeaderResponseModel>>> GetAssetRequestHeaders()
         {
