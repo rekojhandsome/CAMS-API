@@ -8,7 +8,7 @@ namespace CAMS_API.Configuration
     {
         public void Configure(EntityTypeBuilder<Device> builder)
         {
-            builder.ToTable("Device")
+            builder.ToTable("Devices")
                 .HasKey(d => d.DeviceID);
 
             //Relationship Device to Asset 1:N

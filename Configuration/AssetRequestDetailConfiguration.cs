@@ -8,7 +8,7 @@ namespace CAMS_API.Configuration
     {
         public void Configure(EntityTypeBuilder<AssetRequestDetail> builder)
         {
-            builder.ToTable("AssetRequestDetail")
+            builder.ToTable("AssetRequestDetails")
                 .HasKey(ard => new
                 {
                     ard.AssetRequestID,

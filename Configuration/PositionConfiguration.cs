@@ -8,7 +8,7 @@ namespace CAMS_API.Configuration
     {
         public void Configure(EntityTypeBuilder<Position> builder)
         {
-            builder.ToTable("Position")
+            builder.ToTable("Positions")
                 .HasKey(p => p.PositionID);
 
             builder.HasMany(p => p.Employees)

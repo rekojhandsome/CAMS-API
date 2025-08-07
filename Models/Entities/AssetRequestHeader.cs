@@ -11,10 +11,12 @@
 
         public Employee? Employee { get; set; }
         public ICollection<AssetRequestDetail> AssetRequestDetails { get; set; } = new List<AssetRequestDetail>();
+        public ICollection<AssetRequestSignatory> AssetRequestSignatories { get; set; } = new List<AssetRequestSignatory>();
 
         public AssetRequestHeader()
         {
             AssetRequestDetails = new List<AssetRequestDetail>();
+            AssetRequestSignatories = new List<AssetRequestSignatory>();
         }
     }
 }

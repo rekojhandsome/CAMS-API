@@ -8,7 +8,7 @@ namespace CAMS_API.Configuration
     {
         public void Configure(EntityTypeBuilder<Department> builder)
         {
-            builder.ToTable("Department")
+            builder.ToTable("Departments")
                 .HasKey(d => d.DepartmentID);
           
             builder.HasMany(d => d.Employees)

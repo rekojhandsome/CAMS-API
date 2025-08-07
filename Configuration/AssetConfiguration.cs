@@ -8,7 +8,7 @@ namespace CAMS_API.Configuration
     {
         public void Configure(EntityTypeBuilder<Asset> builder)
         {
-            builder.ToTable("Asset")
+            builder.ToTable("Assets")
                 .HasKey(a => a.AssetID);
 
             
