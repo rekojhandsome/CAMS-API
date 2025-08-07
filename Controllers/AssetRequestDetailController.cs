@@ -69,6 +69,8 @@ namespace CAMS_API.Controllers
             //Calculate the TotalAssetValue
             var totalValue = await uow.AssetRequestDetails.GetTotalAssetValueAsync(header.AssetRequestID);
             header.TotalAssetValue = totalValue;
+
+            header.RequiresApproval = totalValue > 5000;
             await uow.CompleteAsync();
 
             var assetRequestDetailModel = mapper.Map<AssetRequestDetailResponseModel>(detail);
