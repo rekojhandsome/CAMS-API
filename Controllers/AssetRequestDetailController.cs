@@ -70,8 +70,13 @@ namespace CAMS_API.Controllers
             var totalValue = await uow.AssetRequestDetails.GetTotalAssetValueAsync(header.AssetRequestID);
             header.TotalAssetValue = totalValue;
 
-            header.RequiresApproval = totalValue > 5000;
+
+            int approvalValue = 5000;
+            header.RequiresApproval = totalValue > approvalValue;
             await uow.CompleteAsync();
+
+
+            var department = await uow.Departments.GetDepartmentByEmployeeAsync(employee.EmployeeID);
 
             var assetRequestDetailModel = mapper.Map<AssetRequestDetailResponseModel>(detail);
             return Ok(assetRequestDetailModel);

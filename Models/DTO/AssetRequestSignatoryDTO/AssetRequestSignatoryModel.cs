@@ -1,6 +1,6 @@
-﻿namespace CAMS_API.Models.Entities
+﻿namespace CAMS_API.Models.DTO.AssetRequestSignatoryDTO
 {
-    public class AssetRequestSignatory
+    public class AssetRequestSignatoryModel
     {
         public int AssetRequestID { get; set; }
         public int SequenceID { get; set; }
@@ -12,8 +12,5 @@
         public string? SignatoryName { get; set; }
         public int Level { get; set; }
         public bool IsSigned { get; set; }
-        public DateTime DateSigned { get; set; }
-
-        public AssetRequestHeader? AssetRequestHeader { get; set; }
     }
 }

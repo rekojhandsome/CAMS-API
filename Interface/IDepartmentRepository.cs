@@ -8,5 +8,7 @@ namespace CAMS_API.Interface
         Task<Department> GetDepartmentByIDAsync(int id);
         Task<Department> CreateDepartmentAsync(Department department);
         void DeleteDepartment(Department department);
+
+        Task<Department> GetDepartmentByEmployeeAsync(int departmentID);
     }
 }

@@ -26,6 +26,8 @@ namespace CAMS_API.Repository.UnitOfWork
 
         public IAssetRequestDetailRepository AssetRequestDetails { get; private set; }
 
+        public IAssetRequestSignatory AssetRequestSignatories { get; private set; }
+
         public UnitOfWork(ApplicationDbContext dbContext)
         {
             this.dbContext = dbContext;

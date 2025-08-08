@@ -1,4 +1,6 @@
 ﻿using CAMS_API.Models.DTO.AssetRequestDetailDTO;
+using CAMS_API.Models.DTO.AssetRequestSignatoryDTO;
+using CAMS_API.Models.Entities;
 
 namespace CAMS_API.Models.DTO.AssetRequestHeaderDTO
 {
@@ -14,10 +16,12 @@ namespace CAMS_API.Models.DTO.AssetRequestHeaderDTO
         public bool RequiresApproval { get; set; }
 
         public ICollection<AssetRequestDetailResponseModel> AssetRequestDetails { get; set; } = new List<AssetRequestDetailResponseModel>();
+        public ICollection<AssetRequestSignatoryModel> AssetRequestSignatories { get; set; } = new List<AssetRequestSignatoryModel>();
 
         public AssetRequestHeaderResponseModel()
         {
             AssetRequestDetails = new List<AssetRequestDetailResponseModel>();
+            AssetRequestSignatories = new List<AssetRequestSignatoryModel>();
         }
     }
 }
