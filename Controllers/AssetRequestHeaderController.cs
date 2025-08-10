@@ -100,6 +100,7 @@ namespace CAMS_API.Controllers
             }
 
             uow.AssetRequestHeaders.DeleteAssetRequestHeader(assetRequestHeaderToDelete);
+            await uow.CompleteAsync();
 
             return Ok("Asset request deleted successfully.");
         }

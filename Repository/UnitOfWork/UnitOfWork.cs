@@ -26,7 +26,9 @@ namespace CAMS_API.Repository.UnitOfWork
 
         public IAssetRequestDetailRepository AssetRequestDetails { get; private set; }
 
-        public IAssetRequestSignatory AssetRequestSignatories { get; private set; }
+        public IAssetRequestSignatoryRepository AssetRequestSignatories { get; private set; }
+
+        public IDocumentSignatoryRepository DocumentSignatories { get; private set; }
 
         public UnitOfWork(ApplicationDbContext dbContext)
         {
@@ -36,8 +38,10 @@ namespace CAMS_API.Repository.UnitOfWork
             Assets = new AssetRepository(dbContext);
             AssetRequestHeaders = new AssetRequestHeaderRepository(dbContext);
             AssetRequestDetails = new AssetRequestDetailRepository(dbContext);
+            AssetRequestSignatories = new AssetRequestSignatory(dbContext);
             Departments = new DepartmentRepository(dbContext);
             Devices = new DeviceRepository(dbContext);
+            DocumentSignatories = new DocumentSignatoryRepository(dbContext);
             Employees = new EmployeeRepository(dbContext);
             Positions = new PositionRepository(dbContext);
         }

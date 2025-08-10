@@ -44,6 +44,7 @@ namespace CAMS_API.Repository
                 .Include(arh => arh.Employee)
                     .ThenInclude(e => e.Position)
                 .Include(arh => arh.AssetRequestDetails)
+                .Include(arh => arh.AssetRequestSignatories)
                 .ToListAsync();
         }
 

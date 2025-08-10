@@ -1,10 +1,11 @@
 ﻿using CAMS_API.Data;
 using CAMS_API.Interface;
+using CAMS_API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CAMS_API.Repository
 {
-    public class AssetRequestSignatory : IAssetRequestSignatory
+    public class AssetRequestSignatory : IAssetRequestSignatoryRepository
     {
         private readonly ApplicationDbContext dbContext;
 
@@ -21,6 +22,13 @@ namespace CAMS_API.Repository
         public async Task<IEnumerable<Models.Entities.AssetRequestSignatory>> GetAssetRequestSignatoriesAsync()
         {
             return await dbContext.AssetRequestSignatories.ToListAsync();
+        }
+
+        public async Task<IEnumerable<Models.Entities.AssetRequestSignatory>> GetSignatoryByRequestID(int assetRequestID)
+        {
+            return await dbContext.AssetRequestSignatories
+                .Where(ars => ars.AssetRequestID == assetRequestID)
+                .ToListAsync();
         }
     }
 }

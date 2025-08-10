@@ -31,8 +31,6 @@ namespace CAMS_API.Repository
 
         public async Task<Employee> GetEmployeeProfile(int accountID)
         {
-            //return await dbContext.Accounts.Where(a => a.AccountID == accountID)
-            //    .Include(a => a.Employee).FirstOrDefaultAsync();
 
             var account = await dbContext.Accounts
                 .Include(a => a.Employee)

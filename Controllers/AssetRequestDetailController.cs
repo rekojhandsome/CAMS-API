@@ -5,6 +5,7 @@ using CAMS_API.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.InteropServices;
 
 namespace CAMS_API.Controllers
 {
@@ -69,14 +70,43 @@ namespace CAMS_API.Controllers
             //Calculate the TotalAssetValue
             var totalValue = await uow.AssetRequestDetails.GetTotalAssetValueAsync(header.AssetRequestID);
             header.TotalAssetValue = totalValue;
-
-
-            int approvalValue = 5000;
-            header.RequiresApproval = totalValue > approvalValue;
             await uow.CompleteAsync();
 
+            //int approvalValue = 5000;
+            //header.RequiresApproval = totalValue > approvalValue;
+            //await uow.CompleteAsync();
 
-            var department = await uow.Departments.GetDepartmentByEmployeeAsync(employee.EmployeeID);
+            if (totalValue > 5000)
+            {
+                header.RequiresApproval = true;
+
+                var existingSignatories = await uow.AssetRequestSignatories.GetSignatoryByRequestID(header.AssetRequestID);
+
+                if (!existingSignatories.Any())
+                {
+
+                    var department = await uow.Departments.GetDepartmentByEmployeeAsync(employee.EmployeeID);
+                    if (department == null)
+                    {
+                        return NotFound("Department not found for employee.");
+                    }
+                    var documents = await uow.DocumentSignatories.GetDocumentSignatoryAsync(employee.DepartmentID);
+
+                    header.AssetRequestSignatories = documents.Select((doc, index) => new AssetRequestSignatory
+                    {
+                        AssetRequestID = header.AssetRequestID,
+                        SequenceID = index + 1,
+                        DepartmentID = doc.DepartmentID,
+                        DepartmentName = department.DepartmentName ?? String.Empty,
+                        PositionID = doc.PositionID,
+                        SignatoryID = doc.SignatoryID,
+                        SignatoryName = doc.SignatoryName ?? String.Empty,
+                        PositionName = doc.PositionName ?? String.Empty,
+                        Level = doc.Level,
+                    }).ToList();
+                }
+            }
+            await uow.CompleteAsync();
 
             var assetRequestDetailModel = mapper.Map<AssetRequestDetailResponseModel>(detail);
             return Ok(assetRequestDetailModel);
