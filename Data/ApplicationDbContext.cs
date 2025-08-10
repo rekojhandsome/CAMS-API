@@ -23,10 +23,114 @@ namespace CAMS_API.Data
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Position> Positions { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(modelBuilder);
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+            base.OnModelCreating(builder);
+
+            builder.Entity<Department>().HasData(
+                new Department{
+                    DepartmentID = 1,
+                    DepartmentName = "IT Department",
+                    DepartmentCode = "IT"
+                },
+                new Department
+                {
+                    DepartmentID = 2,
+                    DepartmentName = "HR Department",
+                    DepartmentCode = "HR"
+                });
+
+            builder.Entity<Position>().HasData(
+                new Position
+                {
+                    PositionID = 1,
+                    PositionName = "Programmer",
+                },
+                new Position
+                {
+                    PositionID = 2,
+                    PositionName = "Manager",
+                },
+                new Position 
+                {
+                    PositionID = 3,
+                    PositionName = "CEO"
+                });
+
+            builder.Entity<Device>().HasData(
+                new Device
+                {
+                    DeviceID = 1,
+                    DeviceName = "Sample Laptop",
+                    DeviceType = "Computer",
+                    Brand = "Sample Brand",
+                    Model = "Sample Model"
+                },
+                new Device
+                {
+                    DeviceID = 2,
+                    DeviceName = "Mobile Phone",
+                    DeviceType = "Smartphone",
+                    Brand = "Sample Mobile Brand",
+                    Model = "Sample Mobile Model"
+                });
+
+            builder.Entity<Employee>().HasData(
+                new Employee
+                {
+                    EmployeeID = 1,
+                    FirstName = "John",
+                    MiddleName = "A",
+                    LastName = "Doe",
+                    BirthDate = new DateTime(1990, 1, 1),
+                    Gender = "Male",
+                    ContactNo = 1234567890,
+                    Email = "sample@gmail.com",
+                    DateHired = new DateTime(2020, 1, 1),
+                    PositionID = 1,
+                    DepartmentID = 1,
+                },
+                 new Employee
+                 {
+                     EmployeeID = 2,
+                     FirstName = "Manager",
+                     MiddleName = "A",
+                     LastName = "Manager",
+                     BirthDate = new DateTime(1990, 1, 1),
+                     Gender = "Male",
+                     ContactNo = 1234567890,
+                     Email = "sample@gmail.com",
+                     DateHired = new DateTime(2020, 1, 1),
+                     PositionID = 2,
+                     DepartmentID = 1,
+                 },
+                 new Employee
+                 {
+                     EmployeeID = 3,
+                     FirstName = "CEO",
+                     MiddleName = "A",
+                     LastName = "CEO",
+                     BirthDate = new DateTime(1990, 1, 1),
+                     Gender = "Male",
+                     ContactNo = 1234567890,
+                     Email = "sample@gmail.com",
+                     DateHired = new DateTime(2020, 1, 1),
+                     PositionID = 3,
+                     DepartmentID = 1,
+                 }
+                 );
+
+
+
+
+
+
+
+
+
+            builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
+
+
     }
 }
