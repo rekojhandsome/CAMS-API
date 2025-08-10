@@ -93,7 +93,7 @@ namespace CAMS_API.Data
                  new Employee
                  {
                      EmployeeID = 2,
-                     FirstName = "Manager",
+                     FirstName = "Sample",
                      MiddleName = "A",
                      LastName = "Manager",
                      BirthDate = new DateTime(1990, 1, 1),
@@ -109,7 +109,7 @@ namespace CAMS_API.Data
                      EmployeeID = 3,
                      FirstName = "CEO",
                      MiddleName = "A",
-                     LastName = "CEO",
+                     LastName = "ceo",
                      BirthDate = new DateTime(1990, 1, 1),
                      Gender = "Male",
                      ContactNo = 1234567890,
@@ -120,13 +120,33 @@ namespace CAMS_API.Data
                  }
                  );
 
-
-
-
-
-
-
-
+            builder.Entity<DocumentSignatory>().HasData(
+                new DocumentSignatory
+                {
+                    DocumentID = 1,
+                    DepartmentID = 1,
+                    SignatoryID = 2,
+                    DocumentName = "Asset Request",
+                    SignatoryName = "Sample Manager",
+                    PositionID = 2,
+                    PositionName = "Manager",
+                    Level = 1,
+                    IsActive = true,
+                    DateCreated = new DateTime(2025, 8, 10)
+                },
+                new DocumentSignatory
+                {
+                    DocumentID = 1,
+                    DepartmentID = 1,
+                    SignatoryID = 3,
+                    DocumentName = "Asset Request",
+                    SignatoryName = "CEO ceo",
+                    PositionID = 3,
+                    PositionName ="CEO",
+                    Level = 2,
+                    IsActive = true,
+                    DateCreated = new DateTime(2025, 8, 10)
+                });
 
             builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
         }
