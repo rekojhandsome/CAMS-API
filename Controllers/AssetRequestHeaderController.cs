@@ -5,6 +5,7 @@ using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
 using CAMS_API.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Reflection.PortableExecutable;
 
 namespace CAMS_API.Controllers
@@ -103,6 +104,36 @@ namespace CAMS_API.Controllers
             await uow.CompleteAsync();
 
             return Ok("Asset request deleted successfully.");
+        }
+
+        [Authorize]
+        [HttpPatch]
+        public async Task<ActionResult> PatchAssetRequestHeader([FromBody] PatchAssetRequestHeaderModel model)
+        {
+            var loginID = User.FindFirst("loginID")?.Value;
+
+            if (string.IsNullOrEmpty(loginID) || !int.TryParse(loginID, out int accountID))
+            {
+                return Unauthorized("Invalid token or user not authenticated.");
+            }
+
+            var employee = await uow.Employees.GetEmployeeProfile(accountID);
+            if (employee == null)
+            {
+                return NotFound("Employee not found.");
+            }
+
+            var header = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
+            if (header == null)
+            {
+                return NotFound("Request header by employee not found.");
+            }
+
+            header.Status = "Pending";
+
+            await uow.CompleteAsync();
+
+            return NoContent();
         }
     }
 }
