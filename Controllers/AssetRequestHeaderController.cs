@@ -51,6 +51,7 @@ namespace CAMS_API.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> CreateAssetRequestHeader([FromBody] AssetRequestHeaderModel model)
         {
+            //To be converted into a service method
             var loginID = User.FindFirst("loginID")?.Value;
 
             if (loginID == null || !int.TryParse(loginID, out int accountID))
@@ -63,6 +64,19 @@ namespace CAMS_API.Controllers
             {
                 return NotFound("Employee not found.");
             }
+
+            //To be converted into a service method
+            var existingRequestHeader = await uow.AssetRequestHeaders.GetAssetRequestHeaderWithoutDetailAsync(employee.EmployeeID);
+
+            if (existingRequestHeader != null)
+            {
+                return Ok(new ExistingAssetRequestHeaderResponse
+                {
+                    Message = "Existing asset request header found",
+                    ID = existingRequestHeader.AssetRequestID
+                });
+            }
+            //To be converted into a service method
             var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
             assetRequestHeader.EmployeeID = employee.EmployeeID;
             assetRequestHeader.Status = "Draft";
@@ -133,7 +147,7 @@ namespace CAMS_API.Controllers
 
             await uow.CompleteAsync();
 
-            return NoContent();
+            return Ok("Asset request updated successfully.");
         }
     }
 }

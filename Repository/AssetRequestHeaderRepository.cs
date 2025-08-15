@@ -48,6 +48,14 @@ namespace CAMS_API.Repository
                 .ToListAsync();
         }
 
-        
+        public async Task<AssetRequestHeader> GetAssetRequestHeaderWithoutDetailAsync(int employeeID)
+        {
+            return await dbContext.AssetRequestHeaders
+                 .Include(arh => arh.AssetRequestDetails)
+                 .Where(arh => arh.EmployeeID == employeeID
+                             && arh.Status == "Draft"
+                             && ( arh.AssetRequestDetails == null ||!arh.AssetRequestDetails.Any()))
+                 .FirstOrDefaultAsync();
+        }
     }
 }
