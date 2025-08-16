@@ -20,6 +20,12 @@ namespace CAMS_API.Repository
             return assetRequestDetail;
         }
 
+        public async Task<IEnumerable<AssetRequestDetail>> CreateAssetRequestDetailRangeAsync(IEnumerable<AssetRequestDetail> assetRequestDetails)
+        {
+            await dbContext.AssetRequestDetails.AddRangeAsync(assetRequestDetails);
+            return assetRequestDetails;
+        }
+
         public async Task<int> FindMaxSequenceIDAsync(int assetRequestID)
         {
             return await dbContext.AssetRequestDetails
