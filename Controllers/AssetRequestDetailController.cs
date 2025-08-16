@@ -68,7 +68,7 @@ namespace CAMS_API.Controllers
 
 
             var maxSequenceID = await uow.AssetRequestDetails.FindMaxSequenceIDAsync(header.AssetRequestID);
-            int sequenceID = ((int?)maxSequenceID ?? 0);
+            int sequenceID = (int?)maxSequenceID ?? 0;
 
             // Process each detail
             foreach (var model in details)
@@ -79,7 +79,7 @@ namespace CAMS_API.Controllers
 
                 sequenceID++;
 
-                var detail = new AssetRequestDetail
+                var assetDetail = new AssetRequestDetail
                 {
                     AssetRequestID = header.AssetRequestID,
                     SequenceID = sequenceID,
@@ -87,8 +87,8 @@ namespace CAMS_API.Controllers
                     Price = price.Value
                 };
 
-                await uow.AssetRequestDetails.CreateAssetRequestDetailAsync(detail);
-                createdDetails.Add(detail);
+                await uow.AssetRequestDetails.CreateAssetRequestDetailAsync(assetDetail);
+                createdDetails.Add(assetDetail);
             }
 
             await uow.CompleteAsync();
