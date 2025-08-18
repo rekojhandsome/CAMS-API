@@ -10,6 +10,7 @@ namespace CAMS_API.Profiles
         {
             CreateMap<AssetRequestHeaderModel, AssetRequestHeader>();
             CreateMap<AssetRequestHeader, AssetRequestHeaderModel>();
+            CreateMap<AssetRequestHeader, AssetRequestHeaderModel>().ReverseMap();
 
             CreateMap<AssetRequestHeader, AssetRequestHeaderResponseModel>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Employee != null ? src.Employee.FirstName : null))

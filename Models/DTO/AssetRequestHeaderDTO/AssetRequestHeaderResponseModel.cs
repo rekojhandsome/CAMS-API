@@ -6,7 +6,7 @@ namespace CAMS_API.Models.DTO.AssetRequestHeaderDTO
 {
     public class AssetRequestHeaderResponseModel
     {
-        public DateTime AssetRequestDate { get; set; } = DateTime.UtcNow;
+        public DateTime AssetRequestDate { get; set; }
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? PositionName { get; set; }

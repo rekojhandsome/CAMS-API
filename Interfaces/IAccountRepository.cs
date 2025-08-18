@@ -8,6 +8,7 @@ namespace CAMS_API.Interface
         Task<IEnumerable<Account>> GetAccountsAsync();
         Task<Account> GetAccountByID(int accountID);
         Task<Account> RegisterAsync(Account account);
+        Task<int> GetAccountIDAsync();
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Interfaces.Service_Interfaces;
 using CAMS_API.Models.DTO.AssetRequestDetailDTO;
 using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
 using CAMS_API.Models.Entities;
@@ -16,11 +17,13 @@ namespace CAMS_API.Controllers
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
+        private readonly IAssetRequestHeaderServiceRepository assetRequestHeaderServiceRepository;
 
-        public AssetRequestHeaderController(IUnitOfWork uow, IMapper mapper)
+        public AssetRequestHeaderController(IUnitOfWork uow, IMapper mapper, IAssetRequestHeaderServiceRepository assetRequestHeaderServiceRepository)
         {
             this.uow = uow;
             this.mapper = mapper;
+            this.assetRequestHeaderServiceRepository = assetRequestHeaderServiceRepository;
         }
 
         [Authorize(Roles = "Admin")]
@@ -47,44 +50,53 @@ namespace CAMS_API.Controllers
             return Ok(assetRequestHeaderModel);
         }
 
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<ActionResult<int>> CreateAssetRequestHeader([FromBody] AssetRequestHeaderModel model)
+        //{
+        //    //To be converted into a service method
+        //    var loginID = User.FindFirst("loginID")?.Value;
+
+        //    if (loginID == null || !int.TryParse(loginID, out int accountID))
+        //    {
+        //        return Unauthorized("Invalid token or user not authenticated.");
+        //    }
+
+        //    var employee = await uow.Employees.GetEmployeeProfile(accountID);
+        //    if (employee == null)
+        //    {
+        //        return NotFound("Employee not found.");
+        //    }
+
+        //    //To be converted into a service method
+        //    var existingRequestHeader = await uow.AssetRequestHeaders.GetAssetRequestHeaderWithoutDetailAsync(employee.EmployeeID);
+
+        //    if (existingRequestHeader != null)
+        //    {
+        //        return Ok(new ExistingAssetRequestHeaderResponse
+        //        {
+        //            Message = "Existing asset request header found",
+        //            ID = existingRequestHeader.AssetRequestID
+        //        });
+        //    }
+        //    //To be converted into a service method
+        //    var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
+        //    assetRequestHeader.EmployeeID = employee.EmployeeID;
+        //    assetRequestHeader.Status = "Draft";
+
+        //    await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
+        //    await uow.CompleteAsync();
+
+        //    return Ok(assetRequestHeader.AssetRequestID);
+        //}
+
         [Authorize]
         [HttpPost]
         public async Task<ActionResult<int>> CreateAssetRequestHeader([FromBody] AssetRequestHeaderModel model)
-        {
-            //To be converted into a service method
-            var loginID = User.FindFirst("loginID")?.Value;
+        { 
+            var header = await assetRequestHeaderServiceRepository.CreateAssetRequestHeaderAsync(model);
 
-            if (loginID == null || !int.TryParse(loginID, out int accountID))
-            {
-                return Unauthorized("Invalid token or user not authenticated.");
-            }
-
-            var employee = await uow.Employees.GetEmployeeProfile(accountID);
-            if (employee == null)
-            {
-                return NotFound("Employee not found.");
-            }
-
-            //To be converted into a service method
-            var existingRequestHeader = await uow.AssetRequestHeaders.GetAssetRequestHeaderWithoutDetailAsync(employee.EmployeeID);
-
-            if (existingRequestHeader != null)
-            {
-                return Ok(new ExistingAssetRequestHeaderResponse
-                {
-                    Message = "Existing asset request header found",
-                    ID = existingRequestHeader.AssetRequestID
-                });
-            }
-            //To be converted into a service method
-            var assetRequestHeader = mapper.Map<AssetRequestHeader>(model);
-            assetRequestHeader.EmployeeID = employee.EmployeeID;
-            assetRequestHeader.Status = "Draft";
-
-            await uow.AssetRequestHeaders.CreateAssetRequestHeaderAsync(assetRequestHeader);
-            await uow.CompleteAsync();
-
-            return Ok(assetRequestHeader.AssetRequestID);
+            return Ok(header);
         }
 
         [HttpPut("{id:int}")]
@@ -122,7 +134,7 @@ namespace CAMS_API.Controllers
 
         [Authorize]
         [HttpPatch]
-        public async Task<ActionResult> PatchAssetRequestHeader([FromBody] PatchAssetRequestHeaderModel model)
+        public async Task<ActionResult> PatchAssetRequestHeader()
         {
             var loginID = User.FindFirst("loginID")?.Value;
 

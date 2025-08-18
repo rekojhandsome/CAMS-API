@@ -2,7 +2,7 @@
 using CAMS_API.Models.DTO.AuthenticationDTO;
 using CAMS_API.Models.Entities;
 
-namespace CAMS_API.Service
+namespace CAMS_API.Interface
 {
     public interface IAuthenticationServiceRepository
     {
