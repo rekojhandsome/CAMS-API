@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
+using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.AccountDTO;
 using CAMS_API.Models.DTO.AuthenticationDTO;
 using CAMS_API.Models.Entities;
-using CAMS_API.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CAMS_API.Repository
+namespace CAMS_API.Services
 {
     public class AuthenticationServiceRepository : IAuthenticationServiceRepository
     {

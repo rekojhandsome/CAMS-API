@@ -26,15 +26,18 @@ namespace CAMS_API.Controllers
         [HttpPost("details")]
         public async Task<ActionResult<IEnumerable<AssetRequestDetailResponseModel>>> CreateAssetRequestDetail([FromBody] object requestBody) // keep as object for flexibility
         {
+            // To be converted to a service method
             var loginID = User.FindFirst("loginID")?.Value;
 
             if (loginID == null || !int.TryParse(loginID, out int accountID))
                 return Unauthorized("Invalid token or user not authenticated.");
 
+            // To be converted to a service method
             var employee = await uow.Employees.GetEmployeeProfile(accountID);
             if (employee == null)
                 return NotFound("Employee not found.");
 
+            // To be converted to a service method
             var header = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
             if (header == null)
                 return NotFound("Request header by employee not found");

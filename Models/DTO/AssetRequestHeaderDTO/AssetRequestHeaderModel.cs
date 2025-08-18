@@ -5,6 +5,7 @@ namespace CAMS_API.Models.DTO.AssetRequestHeaderDTO
 {
     public class AssetRequestHeaderModel
     {
-        public DateTime assetRequestDate { get; set; } = DateTime.UtcNow;
+        public int AssetRequestID { get; set; }
+        public DateTime AssetRequestDate { get; set; }
     }
 }

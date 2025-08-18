@@ -1,8 +1,10 @@
 using CAMS_API.Data;
+using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Interfaces.Service_Interfaces;
 using CAMS_API.Repository;
 using CAMS_API.Repository.UnitOfWork;
-using CAMS_API.Service;
+using CAMS_API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -25,6 +27,9 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 //Services
 builder.Services.AddScoped<IAuthenticationServiceRepository, AuthenticationServiceRepository>();
+builder.Services.AddScoped<IAssetRequestHeaderServiceRepository, AssetRequestHeaderServiceRepository>();
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddHttpContextAccessor();
 
 //JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

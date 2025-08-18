@@ -1,14 +1,19 @@
-﻿using CAMS_API.Data;
+﻿using AutoMapper;
+using CAMS_API.Data;
 using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
-using CAMS_API.Service;
+using CAMS_API.Interfaces.Service_Interfaces;
+using CAMS_API.Services;
 
 namespace CAMS_API.Repository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDbContext dbContext;
-        
+        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly IMapper mapper;
+        private readonly IConfiguration configuration;
+
         public IAccountRepository Accounts { get; private set; }
         public IAssetRepository Assets { get; private set; }
 
@@ -30,11 +35,17 @@ namespace CAMS_API.Repository.UnitOfWork
 
         public IDocumentSignatoryRepository DocumentSignatories { get; private set; }
 
-        public UnitOfWork(ApplicationDbContext dbContext)
+        public IAssetRequestHeaderServiceRepository AssetRequestHeaderService { get; private set; }
+
+
+        public UnitOfWork(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor, IMapper mapper, IConfiguration configuration)
         {
             this.dbContext = dbContext;
+            this.httpContextAccessor = httpContextAccessor;
+            this.mapper = mapper;
+            this.configuration = configuration;
 
-            Accounts = new AccountRepository(dbContext);
+            Accounts = new AccountRepository(dbContext, httpContextAccessor);
             Assets = new AssetRepository(dbContext);
             AssetRequestHeaders = new AssetRequestHeaderRepository(dbContext);
             AssetRequestDetails = new AssetRequestDetailRepository(dbContext);
@@ -44,6 +55,11 @@ namespace CAMS_API.Repository.UnitOfWork
             DocumentSignatories = new DocumentSignatoryRepository(dbContext);
             Employees = new EmployeeRepository(dbContext);
             Positions = new PositionRepository(dbContext);
+
+            //Services
+            AuthenticationService = new AuthenticationServiceRepository(this, configuration, mapper);
+            AssetRequestHeaderService = new AssetRequestHeaderServiceRepository(this, mapper, Accounts);
+            
         }
         public void Dispose()
         {

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.AccountDTO;
 using CAMS_API.Models.DTO.AuthenticationDTO;
-using CAMS_API.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
