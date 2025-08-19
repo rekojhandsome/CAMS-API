@@ -9,22 +9,19 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace CAMS_API.Services
 {
-    public class AssetRequestHeaderServiceRepository : IAssetRequestHeaderServiceRepository
+    public class AssetRequestHeaderServiceRepository(
+        IUnitOfWork uow,
+        IMapper mapper,
+        IAccountRepository accountRepository
+    ) : IAssetRequestHeaderServiceRepository
     {
-        private readonly IUnitOfWork uow;
-        private readonly IMapper mapper;
-        private readonly IAccountRepository accountRepository;
-
-        public AssetRequestHeaderServiceRepository(IUnitOfWork uow, IMapper mapper, IAccountRepository accountRepository)
-        {
-            this.uow = uow;
-            this.mapper = mapper;
-            this.accountRepository = accountRepository;
-        }
+        private readonly IUnitOfWork uow = uow;
+        private readonly IMapper mapper = mapper;
+        private readonly IAccountRepository accountRepository = accountRepository;
         public async Task<ServiceResultDTO<AssetRequestHeaderModel>> CreateAssetRequestHeaderAsync(AssetRequestHeaderModel model)
         {
             var accountID = await accountRepository.GetAccountIDAsync();
-            
+
             var employee = await ValidateEmployeeAsync(accountID);
 
             var existingRequestHeader = await GetExistingRequestHeaderAsync(employee.EmployeeID);
@@ -40,7 +37,7 @@ namespace CAMS_API.Services
 
             var result = mapper.Map<AssetRequestHeaderModel>(header);
 
-            return ServiceResultDTO<AssetRequestHeaderModel>.Ok("Request successful!",result);
+            return ServiceResultDTO<AssetRequestHeaderModel>.Ok("Request successful!", result);
         }
 
         private async Task<Employee> ValidateEmployeeAsync(int accountID)
