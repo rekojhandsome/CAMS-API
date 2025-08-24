@@ -1,4 +1,5 @@
-﻿using CAMS_API.Models.Entities;
+﻿using CAMS_API.CAMS_API.Core.Entities;
+using CAMS_API.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CAMS_API.Data
@@ -21,6 +22,7 @@ namespace CAMS_API.Data
         public DbSet<Device> Devices { get; set; }
         public DbSet<DocumentSignatory> DocumentSignatories { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
         public DbSet<Position> Positions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

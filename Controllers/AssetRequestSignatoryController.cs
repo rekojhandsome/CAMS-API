@@ -55,16 +55,9 @@ namespace CAMS_API.Controllers
         [HttpGet("signatories")]
         public async Task<ActionResult<IEnumerable<AssetRequestHeaderResponseModel>>> GetSignatoriesByAssetRequest()
         {
-            //var signatoryID = await accountRepository.GetAccountIDAsync();
+            var signatoryID = await accountRepository.GetAccountIDAsync();
 
-            var loginIDClaim = User.FindFirst("loginID")?.Value;
-
-            if (string.IsNullOrEmpty(loginIDClaim) || !int.TryParse(loginIDClaim, out int accountID))
-            {
-                return Unauthorized(new { message = "Invalid Token or user not authenticated" });
-            }
-
-            var signatory = await uow.Employees.GetEmployeeProfile(accountID);
+            var signatory = await uow.Employees.GetEmployeeProfile(signatoryID);
 
             var signatories = await uow.AssetRequestSignatories.GetSignatoriesForPendingAssetRequest(signatory.EmployeeID, signatory.DepartmentID);
 

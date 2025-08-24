@@ -1,4 +1,6 @@
-﻿namespace CAMS_API.Models.Entities
+﻿using CAMS_API.CAMS_API.Core.Entities;
+
+namespace CAMS_API.Models.Entities
 {
     public class Asset
     {
@@ -10,7 +12,8 @@
         public int Price { get; set; }
         public required string Status { get; set; }
 
-        public required Device Device { get; set; }
+        public  Device? Device { get; set; }
+        public  Inventory? Inventory { get; set; }
         public ICollection<AssetRequestDetail> AssetRequestDetails { get; set; } = new List<AssetRequestDetail>();
     }
 }
