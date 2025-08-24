@@ -26,7 +26,7 @@ namespace CAMS_API.Repository
                 .Include(arh => arh.AssetRequestSignatories)
                 .Include(arh => arh.Employee)
                 .Where(arh => arh.AssetRequestSignatories.Any(s =>
-                s.SignatoryID == signatoryID && s.DepartmentID == departmentID && s.IsSigned == null & 
+                s.SignatoryID == signatoryID && s.DepartmentID == departmentID && s.IsSigned == null && 
                 !arh.AssetRequestSignatories.Any(prev => prev.Level < s.Level && prev.IsSigned != true)))
                 .ToListAsync();
         }

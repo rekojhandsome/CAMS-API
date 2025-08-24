@@ -5,6 +5,7 @@ using CAMS_API.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace CAMS_API.Controllers
 {
@@ -92,9 +93,9 @@ namespace CAMS_API.Controllers
         [HttpGet("profile")]
         public async Task<ActionResult<EmployeeResponseModel>> GetEmployeeProfile()
         {
-            var loginID = User.FindFirst("LoginID")?.Value;
+            var loginIDClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (loginID == null || !int.TryParse(loginID, out int accountID))
+            if (string.IsNullOrEmpty(loginIDClaim) || !int.TryParse(loginIDClaim, out int accountID))
             {
                 return Unauthorized(new { message = "Invalid Token or user not authenticated." });
             }
