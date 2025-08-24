@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
+using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
 using CAMS_API.Models.DTO.AssetRequestSignatoryDTO;
 using CAMS_API.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -15,11 +17,13 @@ namespace CAMS_API.Controllers
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
+        private readonly IAccountRepository accountRepository;
 
-        public AssetRequestSignatoryController(IUnitOfWork uow, IMapper mapper)
+        public AssetRequestSignatoryController(IUnitOfWork uow, IMapper mapper, IAccountRepository accountRepository)
         {
             this.uow = uow;
             this.mapper = mapper;
+            this.accountRepository = accountRepository;
         }
 
         [HttpGet]
@@ -45,6 +49,15 @@ namespace CAMS_API.Controllers
 
             return Ok(assetRequestSignatoryModel);
         }
-        
+
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<ActionResult<IEnumerable<AssetRequestHeaderResponseModel>>> GetSignatoriesByAssetRequest()
+        //{
+        //    var signatoryID = accountRepository.GetAccountIDAsync();
+
+
+        //}
+
     }
 }
