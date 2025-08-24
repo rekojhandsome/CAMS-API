@@ -6,5 +6,6 @@ namespace CAMS_API.Interface
         Task<IEnumerable<AssetRequestSignatory>> GetAssetRequestSignatoriesAsync();
         Task<AssetRequestSignatory> CreateAssetRequestSignatory(AssetRequestSignatory signatory);
         Task<IEnumerable<AssetRequestSignatory>> GetSignatoryByRequestID(int assetRequestID);
+        Task<IEnumerable<AssetRequestHeader>> GetAssetRequestSignatories(int signatoryID, int departmentID);
     }
 }

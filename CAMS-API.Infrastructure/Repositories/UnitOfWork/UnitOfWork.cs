@@ -49,7 +49,7 @@ namespace CAMS_API.Repository.UnitOfWork
             Assets = new AssetRepository(dbContext);
             AssetRequestHeaders = new AssetRequestHeaderRepository(dbContext);
             AssetRequestDetails = new AssetRequestDetailRepository(dbContext);
-            AssetRequestSignatories = new AssetRequestSignatory(dbContext);
+            AssetRequestSignatories = new AssetRequestSignatoryRepository(dbContext);
             Departments = new DepartmentRepository(dbContext);
             Devices = new DeviceRepository(dbContext);
             DocumentSignatories = new DocumentSignatoryRepository(dbContext);
