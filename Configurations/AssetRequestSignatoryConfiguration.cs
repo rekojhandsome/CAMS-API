@@ -16,6 +16,11 @@ namespace CAMS_API.Configuration
                      ars.DepartmentID,
                      ars.PositionID,
                  });
+
+            builder.HasOne(ars => ars.AssetRequestHeader)
+                .WithMany(arh => arh.AssetRequestSignatories)
+                .HasForeignKey(ars => ars.AssetRequestID)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

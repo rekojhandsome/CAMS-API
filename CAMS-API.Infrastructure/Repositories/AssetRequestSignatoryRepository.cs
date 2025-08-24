@@ -13,30 +13,50 @@ namespace CAMS_API.Repository
         {
             this.dbContext = dbContext;
         }
-        public async Task<Models.Entities.AssetRequestSignatory> CreateAssetRequestSignatory(Models.Entities.AssetRequestSignatory signatory)
+        public async Task<AssetRequestSignatory> CreateAssetRequestSignatory(Models.Entities.AssetRequestSignatory signatory)
         {
             await dbContext.AssetRequestSignatories.AddAsync(signatory);
             return signatory;
         }
 
-        public async Task<IEnumerable<AssetRequestHeader>> GetAssetRequestSignatories(int signatoryID,int departmentID)
+        public async Task<IEnumerable<AssetRequestHeader>> GetSignatoriesForPendingAssetRequest(int signatoryID, int departmentID)
         {
             return await dbContext.AssetRequestHeaders
                 .Include(arh => arh.AssetRequestDetails)
                 .Include(arh => arh.AssetRequestSignatories)
                 .Include(arh => arh.Employee)
                 .Where(arh => arh.AssetRequestSignatories.Any(s =>
-                s.SignatoryID == signatoryID && s.DepartmentID == departmentID && s.IsSigned == null && 
+                    s.SignatoryID == signatoryID && 
+                    s.DepartmentID == departmentID 
+                    && s.IsSigned == null &&
                 !arh.AssetRequestSignatories.Any(prev => prev.Level < s.Level && prev.IsSigned != true)))
                 .ToListAsync();
         }
+       
 
-        public async Task<IEnumerable<Models.Entities.AssetRequestSignatory>> GetAssetRequestSignatoriesAsync()
+        //public async Task<IEnumerable<AssetRequestHeader>> GetSignatoriesForPendingAssetRequest(int signatoryID, int departmentID)
+        //{
+        //    return await dbContext.AssetRequestHeaders
+        //        .Include(arh => arh.AssetRequestDetails)
+        //        .Include(arh => arh.AssetRequestSignatories)
+        //        .Include(arh => arh.Employee)
+        //        .Where(arh => arh.AssetRequestSignatories.Any(s =>
+        //            s.SignatoryID == signatoryID &&
+        //            s.DepartmentID == departmentID &&
+        //            s.IsSigned == null &&
+        //            // ✅ all lower-level signatories must be approved (true), not null or false
+        //            arh.AssetRequestSignatories
+        //                .Where(prev => prev.Level < s.Level)
+        //                .All(prev => prev.IsSigned == true)))
+        //        .ToListAsync();
+        //}
+
+        public async Task<IEnumerable<AssetRequestSignatory>> GetAssetRequestSignatoriesAsync()
         {
             return await dbContext.AssetRequestSignatories.ToListAsync();
         }
 
-        public async Task<IEnumerable<Models.Entities.AssetRequestSignatory>> GetSignatoryByRequestID(int assetRequestID)
+        public async Task<IEnumerable<AssetRequestSignatory>> GetSignatoryByRequestID(int assetRequestID)
         {
             return await dbContext.AssetRequestSignatories
                 .Where(ars => ars.AssetRequestID == assetRequestID)
