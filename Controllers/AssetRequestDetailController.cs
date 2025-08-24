@@ -105,7 +105,7 @@ namespace CAMS_API.Controllers
             {
                 header.RequiresApproval = true;
 
-                var existingSignatories = await uow.AssetRequestSignatories.GetSignatoryByRequestID(header.AssetRequestID);
+                var existingSignatories = await uow.AssetRequestSignatories.GetSignatoryByRequestIDAsync(header.AssetRequestID);
 
                 if (!existingSignatories.Any())
                 {

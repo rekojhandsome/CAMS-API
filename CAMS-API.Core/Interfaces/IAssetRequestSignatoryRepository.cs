@@ -4,8 +4,9 @@ namespace CAMS_API.Interface
     public interface IAssetRequestSignatoryRepository
     {
         Task<IEnumerable<AssetRequestSignatory>> GetAssetRequestSignatoriesAsync();
-        Task<AssetRequestSignatory> CreateAssetRequestSignatory(AssetRequestSignatory signatory);
-        Task<IEnumerable<AssetRequestSignatory>> GetSignatoryByRequestID(int assetRequestID);
-        Task<IEnumerable<AssetRequestHeader>> GetSignatoriesForPendingAssetRequest(int signatoryID, int departmentID);
+        Task<AssetRequestSignatory> CreateAssetRequestSignatoryAsync(AssetRequestSignatory signatory);
+        Task<IEnumerable<AssetRequestSignatory>> GetSignatoryByRequestIDAsync(int assetRequestID);
+        Task<IEnumerable<AssetRequestHeader>> GetSignatoriesForPendingAssetRequestAsync(int signatoryID, int departmentID);
+        Task<AssetRequestHeader> GetAssetRequestWithSignatoriesAsync(int assetRequestID);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CAMS_API.CAMS_API.Core.DTO.AssetRequestSignatoryDTO;
 using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
@@ -43,7 +44,7 @@ namespace CAMS_API.Controllers
         {
             var assetRequestSignatory = mapper.Map<AssetRequestSignatoryModel, AssetRequestSignatory>(model);
 
-            await uow.AssetRequestSignatories.CreateAssetRequestSignatory(assetRequestSignatory);
+            await uow.AssetRequestSignatories.CreateAssetRequestSignatoryAsync(assetRequestSignatory);
             await uow.CompleteAsync();
 
             var assetRequestSignatoryModel = mapper.Map<AssetRequestSignatoryModel>(assetRequestSignatory);
@@ -59,13 +60,36 @@ namespace CAMS_API.Controllers
 
             var signatory = await uow.Employees.GetEmployeeProfile(signatoryID);
 
-            var signatories = await uow.AssetRequestSignatories.GetSignatoriesForPendingAssetRequest(signatory.EmployeeID, signatory.DepartmentID);
+            var signatories = await uow.AssetRequestSignatories.GetSignatoriesForPendingAssetRequestAsync(signatory.EmployeeID, signatory.DepartmentID);
 
             var signatoriesModel = mapper.Map<IEnumerable<AssetRequestHeaderResponseModel>>(signatories);
 
             return Ok(signatoriesModel);
-
         }
+
+        //[Authorize]
+        //[HttpPatch]
+        //public async Task<ActionResult> PatchSignatoriesByAssetRequest([FromBody] PatchAssetRequestSignatoryModel model)
+        //{
+        //    var signatoryID = await accountRepository.GetAccountIDAsync();
+
+        //    var assetRequest = await uow.AssetRequestSignatories.GetAssetRequestWithSignatoriesAsync(model.AssetRequestID);
+
+        //    if (assetRequest is null)
+        //        return NotFound("Asset request not found.");
+
+        //    var signatory = assetRequest.AssetRequestSignatories
+        //        .FirstOrDefault(s => s.SignatoryID == signatoryID);
+
+        //    if (signatory is null)
+        //        return NotFound("Signatory not found for this asset request.");
+
+        //    // Update the signatory's IsSigned status
+        //    signatory.IsSigned = model.IsSigned;
+
+        //    // If signed, set the DateSigned to current date and time
+        //    signatory.DateSigned = model.IsSigned == true ? DateTime.UtcNow : null;
+        //}
 
     }
 }

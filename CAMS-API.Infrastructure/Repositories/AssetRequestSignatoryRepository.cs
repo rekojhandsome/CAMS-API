@@ -13,13 +13,13 @@ namespace CAMS_API.Repository
         {
             this.dbContext = dbContext;
         }
-        public async Task<AssetRequestSignatory> CreateAssetRequestSignatory(Models.Entities.AssetRequestSignatory signatory)
+        public async Task<AssetRequestSignatory> CreateAssetRequestSignatoryAsync(AssetRequestSignatory signatory)
         {
             await dbContext.AssetRequestSignatories.AddAsync(signatory);
             return signatory;
         }
 
-        public async Task<IEnumerable<AssetRequestHeader>> GetSignatoriesForPendingAssetRequest(int signatoryID, int departmentID)
+        public async Task<IEnumerable<AssetRequestHeader>> GetSignatoriesForPendingAssetRequestAsync(int signatoryID, int departmentID)
         {
             return await dbContext.AssetRequestHeaders
                 .Include(arh => arh.AssetRequestDetails)
@@ -56,11 +56,18 @@ namespace CAMS_API.Repository
             return await dbContext.AssetRequestSignatories.ToListAsync();
         }
 
-        public async Task<IEnumerable<AssetRequestSignatory>> GetSignatoryByRequestID(int assetRequestID)
+        public async Task<IEnumerable<AssetRequestSignatory>> GetSignatoryByRequestIDAsync(int assetRequestID)
         {
             return await dbContext.AssetRequestSignatories
                 .Where(ars => ars.AssetRequestID == assetRequestID)
                 .ToListAsync();
+        }
+
+        public async Task<AssetRequestHeader> GetAssetRequestWithSignatoriesAsync(int assetRequestID)
+        {
+            return await dbContext.AssetRequestHeaders
+                .Include(arh => arh.AssetRequestSignatories)
+                .FirstOrDefaultAsync(arh => arh.AssetRequestID == assetRequestID);
         }
     }
 }
