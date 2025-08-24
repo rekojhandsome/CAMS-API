@@ -4,6 +4,7 @@ using CAMS_API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CAMS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250824082034_Updated IsSigned attribute from ARS entity to nullable")]
+    partial class UpdatedIsSignedattributefromARSentitytonullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -160,6 +163,9 @@ namespace CAMS_API.Migrations
                     b.Property<int>("PositionID")
                         .HasColumnType("int");
 
+                    b.Property<int?>("AssetRequestHeaderAssetRequestID")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DateSigned")
                         .HasColumnType("datetime2");
 
@@ -182,6 +188,8 @@ namespace CAMS_API.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AssetRequestID", "SequenceID", "DepartmentID", "PositionID");
+
+                    b.HasIndex("AssetRequestHeaderAssetRequestID");
 
                     b.ToTable("AssetRequestSignatories", (string)null);
                 });
@@ -530,9 +538,7 @@ namespace CAMS_API.Migrations
                 {
                     b.HasOne("CAMS_API.Models.Entities.AssetRequestHeader", "AssetRequestHeader")
                         .WithMany("AssetRequestSignatories")
-                        .HasForeignKey("AssetRequestID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AssetRequestHeaderAssetRequestID");
 
                     b.Navigation("AssetRequestHeader");
                 });

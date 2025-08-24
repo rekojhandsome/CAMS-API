@@ -11,7 +11,7 @@
         public int SignatoryID { get; set; }
         public string? SignatoryName { get; set; }
         public int Level { get; set; }
-        public bool IsSigned { get; set; }
+        public bool? IsSigned { get; set; } = null;
         public DateTime DateSigned { get; set; }
 
         public AssetRequestHeader? AssetRequestHeader { get; set; }
