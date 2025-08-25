@@ -67,29 +67,54 @@ namespace CAMS_API.Controllers
             return Ok(signatoriesModel);
         }
 
-        //[Authorize]
-        //[HttpPatch]
-        //public async Task<ActionResult> PatchSignatoriesByAssetRequest([FromBody] PatchAssetRequestSignatoryModel model)
-        //{
-        //    var signatoryID = await accountRepository.GetAccountIDAsync();
+        [Authorize]
+        [HttpPatch]
+        public async Task<ActionResult> PatchSignatoriesByAssetRequest([FromBody] PatchAssetRequestSignatoryModel model)
+        {
+            var signatoryID = await accountRepository.GetAccountIDAsync();
 
-        //    var assetRequest = await uow.AssetRequestSignatories.GetAssetRequestWithSignatoriesAsync(model.AssetRequestID);
+            var assetRequest = await uow.AssetRequestSignatories.GetAssetRequestWithSignatoriesAsync(model.AssetRequestID);
 
-        //    if (assetRequest is null)
-        //        return NotFound("Asset request not found.");
+            if (assetRequest is null)
+                return NotFound("Asset request not found.");
 
-        //    var signatory = assetRequest.AssetRequestSignatories
-        //        .FirstOrDefault(s => s.SignatoryID == signatoryID);
+            var signatory = assetRequest.AssetRequestSignatories
+                .FirstOrDefault(s => s.SignatoryID == signatoryID);
 
-        //    if (signatory is null)
-        //        return NotFound("Signatory not found for this asset request.");
+            if (signatory is null)
+                return NotFound("Signatory not found for this asset request.");
 
-        //    // Update the signatory's IsSigned status
-        //    signatory.IsSigned = model.IsSigned;
+            // Update the signatory's IsSigned status
+            signatory.IsSigned = model.IsSigned;
 
-        //    // If signed, set the DateSigned to current date and time
-        //    signatory.DateSigned = model.IsSigned == true ? DateTime.UtcNow : null;
-        //}
+            // If signed, set the DateSigned to current date and time
+            signatory.DateSigned = model.IsSigned == true ? DateTime.UtcNow : null;
+
+            string resultMessage = string.Empty;
+
+            if (model.IsSigned == false)
+            {
+                assetRequest.Status = "Rejected";
+                resultMessage = "Asset request rejected.";
+            }
+
+            else
+            {
+                bool allApproved = assetRequest.AssetRequestSignatories.All(ars => ars.IsSigned == true);
+
+                if (allApproved)
+                {
+                    assetRequest.Status = "Approved";
+                    resultMessage = "Asset request approved.";
+                }
+
+              
+            }
+
+            await uow.CompleteAsync();
+            return Ok(new { message = resultMessage });
+
+        }
 
     }
 }

@@ -3,5 +3,6 @@
     public class AssetRequestDetailModel
     {
         public int assetID { get; set; }
+        public int Quantity { get; set; }
     }
 }
