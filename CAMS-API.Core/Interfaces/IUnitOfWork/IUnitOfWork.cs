@@ -1,4 +1,5 @@
-﻿using CAMS_API.Interfaces.Service_Interfaces;
+﻿using CAMS_API.CAMS_API.Core.Interfaces;
+using CAMS_API.Interfaces.Service_Interfaces;
 
 namespace CAMS_API.Interface.IUnitOfWork
 {
@@ -13,6 +14,7 @@ namespace CAMS_API.Interface.IUnitOfWork
         IDeviceRepository Devices { get; }
         IDocumentSignatoryRepository DocumentSignatories { get; }
         IEmployeeRepository Employees { get; }
+        IInventoryRepository Inventories { get; }
         IPositionRepository Positions { get; }
 
         //Services

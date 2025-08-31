@@ -59,6 +59,8 @@ namespace CAMS_API.Data
                     PositionName = "CEO"
                 });
 
+            //TODO: data seed asset and inventory
+
             builder.Entity<Device>().HasData(
                 new Device
                 {

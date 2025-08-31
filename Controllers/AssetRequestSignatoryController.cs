@@ -71,7 +71,7 @@ namespace CAMS_API.Controllers
         [HttpPatch]
         public async Task<ActionResult> PatchSignatoriesByAssetRequest([FromBody] PatchAssetRequestSignatoryModel model)
         {
-            var signatoryID = await accountRepository.GetAccountIDAsync();
+            var accountID = await accountRepository.GetAccountIDAsync();
 
             var assetRequest = await uow.AssetRequestSignatories.GetAssetRequestWithSignatoriesAsync(model.AssetRequestID);
 
@@ -79,7 +79,7 @@ namespace CAMS_API.Controllers
                 return NotFound("Asset request not found.");
 
             var signatory = assetRequest.AssetRequestSignatories
-                .FirstOrDefault(s => s.SignatoryID == signatoryID);
+                .FirstOrDefault(s => s.SignatoryID == accountID);
 
             if (signatory is null)
                 return NotFound("Signatory not found for this asset request.");
@@ -97,7 +97,6 @@ namespace CAMS_API.Controllers
                 assetRequest.Status = "Rejected";
                 resultMessage = "Asset request rejected.";
             }
-
             else
             {
                 bool allApproved = assetRequest.AssetRequestSignatories.All(ars => ars.IsSigned == true);
@@ -106,9 +105,39 @@ namespace CAMS_API.Controllers
                 {
                     assetRequest.Status = "Approved";
                     resultMessage = "Asset request approved.";
-                }
 
-              
+                    // Group by AssetID and sum the quantities
+                    var assetQuantities = assetRequest.AssetRequestDetails
+                        .GroupBy(d => d.AssetID)
+                        .Select(g => new { AssetID = g.Key, TotalQuantity = g.Sum(d => d.Quantity) });
+
+                    //foreach (var aq in assetQuantities)
+                    //{
+                    //    var item = await uow.Inventories.UpdateInventoryQuantityAsync(aq.AssetID, aq.TotalQuantity);
+                    //    if (item is null)
+                    //        return NotFound($"Inventory item with Asset ID {aq.AssetID} not found or insufficient quantity.");
+
+                    //    Console.WriteLine($"AssetID: {aq.AssetID}, New Quantity: {item.Quantity}");
+                    //}
+
+                    foreach (var item in assetQuantities)
+                    {
+                        var inventory = await uow.Inventories.GetInventoryByAssetIDAsync(item.AssetID);
+                        if (inventory is null) return NotFound("Inventory item not found.");
+
+                        if (inventory.Quantity < item.TotalQuantity)
+                            return BadRequest($"Insufficient inventory for Asset ID {item.AssetID}.");
+
+                        inventory.Quantity -= item.TotalQuantity;
+                        uow.Inventories.UpdateInventoryQuantityAsync(inventory);
+
+                    }
+                    resultMessage = "Asset request approved and inventory updated.";
+                }
+                else
+                {
+                    resultMessage = "Asset request partially approved.";
+                }
             }
 
             await uow.CompleteAsync();
