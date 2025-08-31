@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CAMS_API.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250825041617_Updated ARD entity. Added Quantity attriubte")]
-    partial class UpdatedARDentityAddedQuantityattriubte
+    [Migration("20250831091857_Latest migration 310825")]
+    partial class Latestmigration310825
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -76,9 +76,9 @@ namespace CAMS_API.Controllers
             // Process each detail
             foreach (var model in details)
             {
-                var price = await uow.Assets.FindAssetPrice(model.assetID);
+                var price = await uow.Assets.FindAssetPrice(model.AssetID);
                 if (price == null)
-                    return NotFound($"Asset with ID {model.assetID} not found.");
+                    return NotFound($"Asset with ID {model.AssetID} not found.");
 
                 sequenceID++;
 
@@ -86,8 +86,10 @@ namespace CAMS_API.Controllers
                 {
                     AssetRequestID = header.AssetRequestID,
                     SequenceID = sequenceID,
-                    AssetID = model.assetID,
-                    Price = price.Value
+                    AssetID = model.AssetID,
+                    Price = price.Value,
+                    Quantity = model.Quantity
+
                 };
 
                 await uow.AssetRequestDetails.CreateAssetRequestDetailAsync(assetDetail);

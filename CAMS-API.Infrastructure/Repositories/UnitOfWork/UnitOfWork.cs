@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using CAMS_API.CAMS_API.Core.Interfaces;
+using CAMS_API.CAMS_API.Infrastructure.Repositories;
 using CAMS_API.Data;
 using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
@@ -37,6 +39,7 @@ namespace CAMS_API.Repository.UnitOfWork
 
         public IAssetRequestHeaderServiceRepository AssetRequestHeaderService { get; private set; }
 
+        public IInventoryRepository Inventories { get; private set; }
 
         public UnitOfWork(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor, IMapper mapper, IConfiguration configuration)
         {
@@ -54,6 +57,7 @@ namespace CAMS_API.Repository.UnitOfWork
             Devices = new DeviceRepository(dbContext);
             DocumentSignatories = new DocumentSignatoryRepository(dbContext);
             Employees = new EmployeeRepository(dbContext);
+            Inventories = new InventoryRepository(dbContext);
             Positions = new PositionRepository(dbContext);
 
             //Services
