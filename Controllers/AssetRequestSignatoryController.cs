@@ -8,6 +8,7 @@ using CAMS_API.Models.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Formats.Asn1;
 using System.Runtime.InteropServices;
 
@@ -66,7 +67,6 @@ namespace CAMS_API.Controllers
 
             return Ok(signatoriesModel);
         }
-
         [Authorize]
         [HttpPatch]
         public async Task<ActionResult> PatchSignatoriesByAssetRequest([FromBody] PatchAssetRequestSignatoryModel model)
@@ -111,26 +111,19 @@ namespace CAMS_API.Controllers
                         .GroupBy(d => d.AssetID)
                         .Select(g => new { AssetID = g.Key, TotalQuantity = g.Sum(d => d.Quantity) });
 
-                    //foreach (var aq in assetQuantities)
-                    //{
-                    //    var item = await uow.Inventories.UpdateInventoryQuantityAsync(aq.AssetID, aq.TotalQuantity);
-                    //    if (item is null)
-                    //        return NotFound($"Inventory item with Asset ID {aq.AssetID} not found or insufficient quantity.");
-
-                    //    Console.WriteLine($"AssetID: {aq.AssetID}, New Quantity: {item.Quantity}");
-                    //}
-
                     foreach (var item in assetQuantities)
                     {
                         var inventory = await uow.Inventories.GetInventoryByAssetIDAsync(item.AssetID);
-                        if (inventory is null) return NotFound("Inventory item not found.");
+                        if (inventory is null) return NotFound($"Inventory item not found for Asset ID {item.AssetID}.");
 
                         if (inventory.Quantity < item.TotalQuantity)
                             return BadRequest($"Insufficient inventory for Asset ID {item.AssetID}.");
 
+                        // Deduct and force EF to track update
                         inventory.Quantity -= item.TotalQuantity;
-                        uow.Inventories.UpdateInventoryQuantityAsync(inventory);
+                        //uow.dbContext.Entry(inventory).State = EntityState.Modified;
 
+                        Console.WriteLine($"Updating AssetID {item.AssetID} - New Qty: {inventory.Quantity}");
                     }
                     resultMessage = "Asset request approved and inventory updated.";
                 }
@@ -142,8 +135,8 @@ namespace CAMS_API.Controllers
 
             await uow.CompleteAsync();
             return Ok(new { message = resultMessage });
-
         }
+
 
     }
 }

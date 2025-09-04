@@ -136,30 +136,28 @@ namespace CAMS_API.Controllers
         [HttpPatch]
         public async Task<ActionResult> PatchAssetRequestHeader()
         {
-            var loginID = User.FindFirst("loginID")?.Value;
+            //var loginID = User.FindFirst("loginID")?.Value;
 
-            if (string.IsNullOrEmpty(loginID) || !int.TryParse(loginID, out int accountID))
-            {
-                return Unauthorized("Invalid token or user not authenticated.");
-            }
+            //if (string.IsNullOrEmpty(loginID) || !int.TryParse(loginID, out int accountID))
+            //    return Unauthorized("Invalid token or user not authenticated.");
 
-            var employee = await uow.Employees.GetEmployeeProfile(accountID);
-            if (employee == null)
-            {
-                return NotFound("Employee not found.");
-            }
+            //var employee = await uow.Employees.GetEmployeeProfile(accountID);
+            //if (employee == null)
+            //    return NotFound("Employee not found.");
 
-            var header = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
-            if (header == null)
-            {
-                return NotFound("Request header by employee not found.");
-            }
 
-            header.Status = "Pending";
+            //var header = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
+            //if (header == null)
+            //    return NotFound("Request header by employee not found.");
 
-            await uow.CompleteAsync();
+            //header.Status = "Pending";
 
-            return Ok("Asset request updated successfully.");
+            //await uow.CompleteAsync();
+
+            //return Ok("Asset request updated successfully.");
+
+            var result = await assetRequestHeaderServiceRepository.PatchAssetRequestHeader();
+            return Ok(result);
         }
     }
 }
