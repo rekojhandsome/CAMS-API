@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CAMS_API.CAMS_API.Core.Interfaces;
 using CAMS_API.CAMS_API.Infrastructure.Repositories;
+using CAMS_API.CAMS_API.Infrastructure.Services;
 using CAMS_API.Data;
 using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
@@ -29,17 +30,18 @@ namespace CAMS_API.Repository.UnitOfWork
 
         public IPositionRepository Positions { get; private set; }
 
-        public IAuthenticationServiceRepository AuthenticationService { get; private set; }
-
         public IAssetRequestDetailRepository AssetRequestDetails { get; private set; }
 
         public IAssetRequestSignatoryRepository AssetRequestSignatories { get; private set; }
 
         public IDocumentSignatoryRepository DocumentSignatories { get; private set; }
 
-        public IAssetRequestHeaderServiceRepository AssetRequestHeaderService { get; private set; }
-
         public IInventoryRepository Inventories { get; private set; }
+
+        //Services
+        public IAuthenticationServiceRepository AuthenticationService { get; private set; }
+        public IAssetRequestHeaderServiceRepository AssetRequestHeaderService { get; private set; }
+        public IAssetRequestDetailServiceRepository AssetRequestDetailService { get; private set;}
 
         public UnitOfWork(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor, IMapper mapper, IConfiguration configuration)
         {
@@ -63,6 +65,7 @@ namespace CAMS_API.Repository.UnitOfWork
             //Services
             AuthenticationService = new AuthenticationServiceRepository(this, configuration, mapper);
             AssetRequestHeaderService = new AssetRequestHeaderServiceRepository(this, mapper, Accounts);
+            AssetRequestDetailService = new AssetRequestDetailServiceRepository(this, mapper, Accounts); 
             
         }
         public void Dispose()

@@ -15,14 +15,14 @@
             };
 
         public static ServiceResultDTO<T> Fail(string message) =>
-            new ServiceResultDTO<T>
+            new()
             {
                 Success = false,
                 Message = message
             };
 
         public static ServiceResultDTO<T> Fail(string message, T data) =>
-            new ServiceResultDTO<T>
+            new()
             {
                 Success = false,
                 Message = message,
