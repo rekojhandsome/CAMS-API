@@ -20,6 +20,7 @@ namespace CAMS_API.Interface.IUnitOfWork
         //Services
         IAuthenticationServiceRepository AuthenticationService { get; }
         IAssetRequestHeaderServiceRepository AssetRequestHeaderService { get; }
+        IAssetRequestDetailServiceRepository AssetRequestDetailService { get; }
 
         Task<int> CompleteAsync();
     }

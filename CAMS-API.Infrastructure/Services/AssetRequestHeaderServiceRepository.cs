@@ -42,11 +42,11 @@ namespace CAMS_API.Services
             return ServiceResultDTO<AssetRequestHeaderModel>.Ok("Request successful!", result);
         }
 
-        private async Task<Employee> ValidateEmployeeAsync(int accountID)
+        private async Task<Employee?> ValidateEmployeeAsync(int accountID)
         {
             var employee = await uow.Employees.GetEmployeeProfile(accountID);
-            if (employee == null)
-                throw new KeyNotFoundException("Employee not found.");
+            if (employee is null)
+                return null;
 
             return employee;
         }
