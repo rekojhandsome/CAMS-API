@@ -14,12 +14,12 @@
                 Data = data
             };
 
-        //public static ServiceResultDTO<T> Fail(string message) =>
-        //    new ServiceResultDTO<T>
-        //    {
-        //        Success = false,
-        //        Message = message
-        //    };
+        public static ServiceResultDTO<T> Fail(string message) =>
+            new ServiceResultDTO<T>
+            {
+                Success = false,
+                Message = message
+            };
 
         public static ServiceResultDTO<T> Fail(string message, T data) =>
             new ServiceResultDTO<T>

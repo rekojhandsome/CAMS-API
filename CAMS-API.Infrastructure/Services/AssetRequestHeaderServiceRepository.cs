@@ -6,6 +6,7 @@ using CAMS_API.Models.DTO;
 using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
 using CAMS_API.Models.Entities;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CAMS_API.Services
 {
@@ -68,5 +69,28 @@ namespace CAMS_API.Services
             return header;
         }
 
+        public async Task<string> PatchAssetRequestHeader()
+        {
+            var accountID = await accountRepository.GetAccountIDAsync();
+
+            var employee = await uow.Employees.GetEmployeeProfile(accountID);
+
+            var header = await uow.AssetRequestHeaders.GetAssetRequestHeaderByEmployeeAsync(employee.EmployeeID);
+            if (header is null)
+            {
+                string failedMessage = "No existing asset request header found for the employee.";
+
+                return failedMessage;
+            }
+
+            header.Status = "Pending";
+
+            await uow.CompleteAsync();
+
+            var successMessage = "Asset request updated successfully.";
+
+            return successMessage;
+
+        }
     }
 }
