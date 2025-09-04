@@ -7,7 +7,7 @@
         public T? Data { get; set; }
 
         public static ServiceResultDTO<T> Ok(string message,T data) =>
-            new ServiceResultDTO<T>
+            new()
             {
                 Success = true,
                 Message = message,
