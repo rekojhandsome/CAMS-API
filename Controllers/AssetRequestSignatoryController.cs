@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CAMS_API.CAMS_API.Core.DTO.AssetRequestSignatoryDTO;
+using CAMS_API.CAMS_API.Core.Interfaces.Service_Interfaces;
 using CAMS_API.Interface;
 using CAMS_API.Interface.IUnitOfWork;
 using CAMS_API.Models.DTO.AssetRequestHeaderDTO;
@@ -20,13 +21,14 @@ namespace CAMS_API.Controllers
     {
         private readonly IUnitOfWork uow;
         private readonly IMapper mapper;
+        private readonly IAssetRequestSignatoryServiceRepository assetRequestSignatoryServiceRepository;
         private readonly IAccountRepository accountRepository;
 
-        public AssetRequestSignatoryController(IUnitOfWork uow, IMapper mapper, IAccountRepository accountRepository)
+        public AssetRequestSignatoryController(IUnitOfWork uow, IMapper mapper, IAssetRequestSignatoryServiceRepository assetRequestSignatoryServiceRepository)
         {
             this.uow = uow;
             this.mapper = mapper;
-            this.accountRepository = accountRepository;
+            this.assetRequestSignatoryServiceRepository = assetRequestSignatoryServiceRepository;
         }
 
         [HttpGet]

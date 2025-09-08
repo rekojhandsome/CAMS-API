@@ -1,3 +1,4 @@
+using CAMS_API.CAMS_API.Core.Interfaces.Service_Interfaces;
 using CAMS_API.CAMS_API.Infrastructure.Services;
 using CAMS_API.Data;
 using CAMS_API.Interface;
@@ -39,10 +40,13 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //Database Connection
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 //Services
+
+builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAuthenticationServiceRepository, AuthenticationServiceRepository>();
 builder.Services.AddScoped<IAssetRequestHeaderServiceRepository, AssetRequestHeaderServiceRepository>();
 builder.Services.AddScoped<IAssetRequestDetailServiceRepository, AssetRequestDetailServiceRepository>();
-builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAssetRequestSignatoryServiceRepository, AssetRequestSignatoryServiceRepository>();
+
 builder.Services.AddHttpContextAccessor();
 
 //JWT

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CAMS_API.CAMS_API.Core.Interfaces;
+using CAMS_API.CAMS_API.Core.Interfaces.Service_Interfaces;
 using CAMS_API.CAMS_API.Infrastructure.Repositories;
 using CAMS_API.CAMS_API.Infrastructure.Services;
 using CAMS_API.Data;
@@ -42,6 +43,7 @@ namespace CAMS_API.Repository.UnitOfWork
         public IAuthenticationServiceRepository AuthenticationService { get; private set; }
         public IAssetRequestHeaderServiceRepository AssetRequestHeaderService { get; private set; }
         public IAssetRequestDetailServiceRepository AssetRequestDetailService { get; private set;}
+        public IAssetRequestSignatoryServiceRepository AssetRequestSignatoryService { get; private set; }
 
         public UnitOfWork(ApplicationDbContext dbContext, IHttpContextAccessor httpContextAccessor, IMapper mapper, IConfiguration configuration)
         {
@@ -65,8 +67,8 @@ namespace CAMS_API.Repository.UnitOfWork
             //Services
             AuthenticationService = new AuthenticationServiceRepository(this, configuration, mapper);
             AssetRequestHeaderService = new AssetRequestHeaderServiceRepository(this, mapper, Accounts);
-            AssetRequestDetailService = new AssetRequestDetailServiceRepository(this, mapper, Accounts); 
-            
+            AssetRequestDetailService = new AssetRequestDetailServiceRepository(this, mapper, Accounts);
+            AssetRequestSignatoryService = new AssetRequestSignatoryServiceRepository(this, mapper, Accounts);
         }
         public void Dispose()
         {
