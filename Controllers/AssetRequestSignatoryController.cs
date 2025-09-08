@@ -24,7 +24,7 @@ namespace CAMS_API.Controllers
         private readonly IAssetRequestSignatoryServiceRepository assetRequestSignatoryServiceRepository;
         private readonly IAccountRepository accountRepository;
 
-        public AssetRequestSignatoryController(IUnitOfWork uow, IMapper mapper, IAssetRequestSignatoryServiceRepository assetRequestSignatoryServiceRepository)
+        public AssetRequestSignatoryController(IUnitOfWork uow, IMapper mapper, IAssetRequestSignatoryServiceRepository assetRequestSignatoryServiceRepository, IAccountRepository accountRepository)
         {
             this.uow = uow;
             this.mapper = mapper;
@@ -74,70 +74,13 @@ namespace CAMS_API.Controllers
         [HttpPatch]
         public async Task<ActionResult> PatchSignatoriesByAssetRequest([FromBody] PatchAssetRequestSignatoryModel model)
         {
-            var accountID = await accountRepository.GetAccountIDAsync();
+            var mappedModel = mapper.Map<PatchAssetRequestSignatoryModel, AssetRequestSignatoryModel>(model);
+            var result = await assetRequestSignatoryServiceRepository.PatchPendingRequestAsync(mappedModel);
 
-            var assetRequest = await uow.AssetRequestSignatories.GetAssetRequestWithSignatoriesAsync(model.AssetRequestID);
+            if (!result.Success)
+                return BadRequest(result);
 
-            if (assetRequest is null)
-                return NotFound("Asset request not found.");
-
-            var signatory = assetRequest.AssetRequestSignatories
-                .FirstOrDefault(s => s.SignatoryID == accountID);
-
-            if (signatory is null)
-                return NotFound("Signatory not found for this asset request.");
-
-            // Update the signatory's IsSigned status
-            signatory.IsSigned = model.IsSigned;
-
-            // If signed, set the DateSigned to current date and time
-            signatory.DateSigned = model.IsSigned == true ? DateTime.UtcNow : null;
-
-            string resultMessage = string.Empty;
-
-            if (model.IsSigned == false)
-            {
-                assetRequest.Status = "Rejected";
-                resultMessage = "Asset request rejected.";
-            }
-            else
-            {
-                bool allApproved = assetRequest.AssetRequestSignatories.All(ars => ars.IsSigned == true);
-
-                if (allApproved)
-                {
-                    assetRequest.Status = "Approved";
-                    resultMessage = "Asset request approved.";
-
-                    // Group by AssetID and sum the quantities
-                    var assetQuantities = assetRequest.AssetRequestDetails
-                        .GroupBy(d => d.AssetID)
-                        .Select(g => new { AssetID = g.Key, TotalQuantity = g.Sum(d => d.Quantity) });
-
-                    foreach (var item in assetQuantities)
-                    {
-                        var inventory = await uow.Inventories.GetInventoryByAssetIDAsync(item.AssetID);
-                        if (inventory is null) return NotFound($"Inventory item not found for Asset ID {item.AssetID}.");
-
-                        if (inventory.Quantity < item.TotalQuantity)
-                            return BadRequest($"Insufficient inventory for Asset ID {item.AssetID}.");
-
-                        // Deduct and force EF to track update
-                        inventory.Quantity -= item.TotalQuantity;
-                        //uow.dbContext.Entry(inventory).State = EntityState.Modified;
-
-                        Console.WriteLine($"Updating AssetID {item.AssetID} - New Qty: {inventory.Quantity}");
-                    }
-                    resultMessage = "Asset request approved and inventory updated.";
-                }
-                else
-                {
-                    resultMessage = "Asset request partially approved.";
-                }
-            }
-
-            await uow.CompleteAsync();
-            return Ok(new { message = resultMessage });
+            return Ok(result);
         }
 
 
