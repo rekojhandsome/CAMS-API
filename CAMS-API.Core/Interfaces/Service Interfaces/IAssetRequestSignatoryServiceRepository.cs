@@ -5,6 +5,6 @@ namespace CAMS_API.CAMS_API.Core.Interfaces.Service_Interfaces
 {
     public interface IAssetRequestSignatoryServiceRepository
     {
-        Task<ServiceResultDTO<AssetRequestSignatoryModel>> PatchSignatoriesAsync(AssetRequestSignatoryModel model);
+        Task<ServiceResultDTO<AssetRequestSignatoryModel>> PatchPendingRequestAsync(AssetRequestSignatoryModel model);
     }
 }
