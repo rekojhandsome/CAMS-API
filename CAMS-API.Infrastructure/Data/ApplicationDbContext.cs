@@ -157,6 +157,20 @@ namespace CAMS_API.Data
                      DateHired = new DateTime(2020, 1, 1),
                      PositionID = 3,
                      DepartmentID = 1,
+                 },
+                 new Employee
+                 {
+                     EmployeeID = 4,
+                     FirstName = "Admin",
+                     MiddleName = "A",
+                     LastName = "admin",
+                     BirthDate = new DateTime(1990, 1, 1),
+                     Gender = "Male",
+                     ContactNo = 1234567890,
+                     Email = "admin@gmail.com",
+                     DateHired = new DateTime(2020, 1, 1),
+                     PositionID = 1,
+                     DepartmentID = 1,
                  }
                  );
 
