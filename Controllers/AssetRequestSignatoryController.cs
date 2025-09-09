@@ -29,6 +29,7 @@ namespace CAMS_API.Controllers
             this.uow = uow;
             this.mapper = mapper;
             this.assetRequestSignatoryServiceRepository = assetRequestSignatoryServiceRepository;
+            this.accountRepository = accountRepository;
         }
 
         [HttpGet]

@@ -55,7 +55,8 @@ namespace CAMS_API.CAMS_API.Infrastructure.Services
                     SequenceID = sequenceID,
                     AssetID = model.AssetID,
                     Price = price.Value,
-                    Quantity = model.Quantity
+                    Quantity = model.Quantity,
+                    TotalPrice = price.Value * model.Quantity
                 };
 
                 await uow.AssetRequestDetails.CreateAssetRequestDetailAsync(assetDetail);

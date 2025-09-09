@@ -37,7 +37,7 @@ namespace CAMS_API.Repository
         {
             var total = await dbContext.AssetRequestDetails
                 .Where(ard => ard.AssetRequestID == assetRequestHeaderID)
-                .SumAsync(ard => ard.Price);
+                .SumAsync(ard => ard.TotalPrice);
 
             return total;
         }
