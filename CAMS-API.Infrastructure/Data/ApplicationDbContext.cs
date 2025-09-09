@@ -61,6 +61,42 @@ namespace CAMS_API.Data
 
             //TODO: data seed asset and inventory
 
+            builder.Entity<Inventory>().HasData(
+                new Inventory
+                {
+                    InventoryID = 1,
+                    AssetID = 1,
+                    Quantity = 20,
+                },
+                new Inventory
+                {
+                    InventoryID = 2,
+                    AssetID = 2,
+                    Quantity = 20,
+                });
+
+            builder.Entity<Asset>().HasData(
+                new Asset
+                {
+                    AssetID = 1,
+                    DeviceID = 1,
+                    AssetName = "Sample Laptop Asset",
+                    SerialNumber = "SN123456",
+                    DateAcquired = new DateTime(2023, 1, 1),
+                    Price= 3000,
+                    Status = "Available",
+                },
+                new Asset
+                {
+                    AssetID = 2,
+                    DeviceID = 2,
+                    AssetName = "Sample Mobile Phone",
+                    SerialNumber = "SN654321",
+                    DateAcquired = new DateTime(2023, 1, 1),
+                    Price = 5000,
+                    Status = "Available",
+                });
+            
             builder.Entity<Device>().HasData(
                 new Device
                 {
