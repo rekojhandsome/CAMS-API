@@ -17,27 +17,13 @@ namespace CAMS_API.CAMS_API.Infrastructure.Repositories
         public async Task<Inventory> GetInventoryByAssetIDAsync(int assetID)
         {
             return await dbContext.Inventories
-        .Where(i => i.AssetID == assetID)
-        .FirstOrDefaultAsync();
+                .Where(i => i.AssetID == assetID)
+                .FirstOrDefaultAsync();
         }
 
-        public void UpdateInventoryQuantityAsync(Inventory inventory)
+        public void UpdateInventoryQuantity(Inventory inventory)
         {
-            //var inventoryItem = await GetInventoryByAssetIDAsync(assetID);
-
-            //if (inventoryItem is null)
-            //    return null;
-
-            //if (inventoryItem.Quantity < quantityToDeduct)
-            //    return null;
-
-            //inventoryItem.Quantity = inventoryItem.Quantity - quantityToDeduct;
-
-            //dbContext.Inventories.Update(inventoryItem);
-
-            //return inventoryItem;
-
-            dbContext.Inventories.Update(inventory);
+            dbContext.Entry(inventory).State = EntityState.Modified;
         }
     }
 }
