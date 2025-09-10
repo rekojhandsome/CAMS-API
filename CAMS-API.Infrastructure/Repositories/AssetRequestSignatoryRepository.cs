@@ -67,6 +67,7 @@ namespace CAMS_API.Repository
         {
             return await dbContext.AssetRequestHeaders
                 .Include(arh => arh.AssetRequestSignatories)
+                .Include(arh => arh.AssetRequestDetails)
                 .FirstOrDefaultAsync(arh => arh.AssetRequestID == assetRequestID);
         }
     }
