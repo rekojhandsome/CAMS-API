@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36301.6 d17.14
+VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CAMS-API", "CAMS-API.csproj", "{0B3199DC-98DB-4598-980B-49D2404D3597}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "..\UnitTests\UnitTests.csproj", "{5BFC00A0-2B6B-42E4-AFCF-79AA4555EC31}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0B3199DC-98DB-4598-980B-49D2404D3597}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B3199DC-98DB-4598-980B-49D2404D3597}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B3199DC-98DB-4598-980B-49D2404D3597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BFC00A0-2B6B-42E4-AFCF-79AA4555EC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BFC00A0-2B6B-42E4-AFCF-79AA4555EC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BFC00A0-2B6B-42E4-AFCF-79AA4555EC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BFC00A0-2B6B-42E4-AFCF-79AA4555EC31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
